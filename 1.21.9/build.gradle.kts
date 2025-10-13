@@ -23,6 +23,9 @@ loom {
 }
 
 dependencies {
+    implementation(project(":common"))
+    include(project(":common"))
+
     minecraft("com.mojang:minecraft:${minecraftVersion}")
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     mappings(loom.officialMojangMappings())

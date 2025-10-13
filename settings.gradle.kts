@@ -1,6 +1,7 @@
 pluginManagement {
     plugins {
         id("fabric-loom") version extra["loomVersion"] as String
+        id("com.gradleup.shadow") version extra["shadowVersion"] as String
     }
     repositories {
         maven {

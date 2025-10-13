@@ -3,13 +3,7 @@ package dev.smootheez.smoothiezapi.config.serializer;
 import com.google.gson.*;
 import dev.smootheez.smoothiezapi.config.*;
 
-public class EnumSerializer<E extends Enum<E>> implements ConfigOptionSerializer<E> {
-    private final Class<E> enumClass;
-
-    public EnumSerializer(Class<E> enumClass) {
-        this.enumClass = enumClass;
-    }
-
+public record EnumSerializer<E extends Enum<E>>(Class<E> enumClass) implements ConfigOptionSerializer<E> {
     @Override
     public JsonElement serialize(E value) {
         return new JsonPrimitive(value.name());
