@@ -10,15 +10,20 @@ public final class ConfigManager {
 
     private ConfigManager() {}
 
-    public static void register(Object configInstance) {
+    public static void register(ConfigApi configInstance) {
         Objects.requireNonNull(configInstance, "Config instance cannot be null");
 
-        if (!(configInstance instanceof ConfigApi)) {
-            Constants.LOGGER.error("Config instance must implement ConfigApi. Class: {} skipping...", configInstance.getClass().getName());
-            return;
-        }
+        Class<?> instanceClass = configInstance.getClass();
 
-        configs.putIfAbsent(configInstance.getClass(), configInstance);
+        configs.putIfAbsent(instanceClass, configInstance);
+
+        // Automatically load existing config from disk (if exists)
+        configInstance.loadConfig();
+
+        // Then save (to ensure file is created and synced)
+        configInstance.saveConfig();
+
+        Constants.LOGGER.info("Registered config: {}", instanceClass.getSimpleName());
     }
 
     @SuppressWarnings("unchecked")

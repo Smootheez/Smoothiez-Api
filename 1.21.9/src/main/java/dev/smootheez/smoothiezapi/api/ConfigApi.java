@@ -1,5 +1,6 @@
 package dev.smootheez.smoothiezapi.api;
 
+import dev.smootheez.smoothiezapi.annotations.*;
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.util.*;
 
@@ -7,26 +8,41 @@ import java.lang.reflect.*;
 import java.util.*;
 
 public interface ConfigApi {
-    default List<BaseConfigOption> getAllOptions() {
-        List<BaseConfigOption> options = new ArrayList<>();
-        Class<?> clazz = this.getClass();
-        Arrays.stream(clazz.getMethods())
+    default String getConfigId() {
+        Class<? extends ConfigApi> configClass = this.getClass();
+        Config config = configClass.getAnnotation(Config.class);
+        if (config == null)
+            throw new IllegalStateException("Config class " + configClass.getName() + " is missing @Config annotation");
+        return config.name();
+    }
+
+    default ConfigWriter getWriter() {
+        List<ConfigOption<?>> options = new ArrayList<>();
+        Class<? extends ConfigApi> configClass = this.getClass();
+        Arrays.stream(configClass.getMethods())
+                .filter(method -> ConfigOption.class.isAssignableFrom(method.getReturnType()))
                 .filter(method -> method.getParameterCount() == 0)
-                .filter(method -> BaseConfigOption.class.isAssignableFrom(method.getReturnType()))
-                .forEach(method -> {
-                    try {
-                        Object value = method.invoke(this);
-                        if (value instanceof BaseConfigOption opt) {
-                            options.add(opt);
-                        }
-                    } catch (ReflectiveOperationException e) {
-                        Constants.LOGGER.error(
-                                "Failed to get config option from method: {}, error: {}",
-                                method.getName(), e.getMessage()
-                        );
-                    }
-                });
-        return options;
+                .forEach(method -> invokeConfigOption(method, options));
+        ConfigWriter writer = new ConfigWriter(getConfigId());
+        options.forEach(option -> writer.addOption(option.getKey(), option));
+        return writer;
+    }
+
+    private void invokeConfigOption(Method method, List<ConfigOption<?>> options) {
+        try {
+            Object value = method.invoke(this);
+            if (value instanceof ConfigOption) options.add((ConfigOption<?>) value);
+        } catch (ReflectiveOperationException e) {
+            Constants.LOGGER.error("Failed to get config option from method {}: {}", method.getName(), e.getMessage());
+        }
+    }
+
+    default void saveConfig() {
+        getWriter().saveConfig();
+    }
+
+    default void loadConfig() {
+        getWriter().loadConfig();
     }
 }
 

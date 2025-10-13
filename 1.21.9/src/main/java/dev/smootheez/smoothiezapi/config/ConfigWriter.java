@@ -17,6 +17,10 @@ public class ConfigWriter {
         this.configFile = FabricLoader.getInstance().getConfigDir().resolve(configId + ".json").toFile();
     }
 
+    public <T> void addOption(String key, ConfigOption<T> option) {
+        options.put(key, new ConfigOptionAdpter<>(option));
+    }
+
     public void loadConfig() {
         if (!configFile.exists()) {
             saveConfig();

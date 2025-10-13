@@ -20,6 +20,9 @@
     ],
     "client": [
       "dev.smootheez.smoothiezapi.SmoothiezApiClient"
+    ],
+    "smoothiezapi": [
+      "dev.smootheez.smoothiezapi.example.ExampleConfig"
     ]
   },
   "accessWidener": "smoothiezapi.accesswidener",
