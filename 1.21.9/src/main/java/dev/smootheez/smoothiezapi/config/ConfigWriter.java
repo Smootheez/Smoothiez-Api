@@ -10,15 +10,16 @@ import java.util.*;
 public class ConfigWriter {
     private final Gson gson;
     private final File configFile;
-    private final Map<String, ConfigOptionAdpter<?>> options = new TreeMap<>();
+    private final Map<String, ConfigOptionAdpter<?>> options;
 
     public ConfigWriter(String configId) {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.configFile = FabricLoader.getInstance().getConfigDir().resolve(configId + ".json").toFile();
+        this.options = new TreeMap<>();
     }
 
     public <T> void addOption(String key, ConfigOption<T> option) {
-        options.put(key, new ConfigOptionAdpter<>(option));
+        options.putIfAbsent(key, new ConfigOptionAdpter<>(option));
     }
 
     public void loadConfig() {

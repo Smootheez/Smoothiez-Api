@@ -1,6 +1,5 @@
 package dev.smootheez.smoothiezapi.example;
 
-import dev.smootheez.smoothiezapi.annotations.*;
 import dev.smootheez.smoothiezapi.api.*;
 import dev.smootheez.smoothiezapi.config.*;
 

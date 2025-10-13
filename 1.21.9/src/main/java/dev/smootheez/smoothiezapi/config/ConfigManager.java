@@ -6,36 +6,52 @@ import dev.smootheez.smoothiezapi.util.*;
 import java.util.*;
 
 public final class ConfigManager {
-    private static final Map<Class<?>, Object> configs = new HashMap<>();
+    // The map explicitly links config class -> config instance of the same type
+    private static final Map<Class<? extends ConfigApi>, ConfigApi> configs = new HashMap<>();
 
     private ConfigManager() {}
 
-    public static void register(ConfigApi configInstance) {
+    /**
+     * Register a new configuration instance.
+     * Automatically loads existing data from disk and saves if necessary.
+     */
+    public static <T extends ConfigApi> void register(T configInstance) {
         Objects.requireNonNull(configInstance, "Config instance cannot be null");
 
-        Class<?> instanceClass = configInstance.getClass();
+        Class<? extends ConfigApi> configClass = configInstance.getClass();
 
-        configs.putIfAbsent(instanceClass, configInstance);
+        // Only add if not already registered
+        configs.putIfAbsent(configClass, configInstance);
 
-        // Automatically load existing config from disk (if exists)
+        // Load first (so existing values are preserved)
         configInstance.loadConfig();
 
-        // Then save (to ensure file is created and synced)
+        // Save to ensure file exists and is up-to-date
         configInstance.saveConfig();
 
-        Constants.LOGGER.info("Registered config: {}", instanceClass.getSimpleName());
+        Constants.LOGGER.info("Registered config: {}", configClass.getSimpleName());
     }
 
+    /**
+     * Retrieve a registered configuration instance by its class.
+     */
     @SuppressWarnings("unchecked")
-    public static <T> T getConfig(Class<T> configClass) {
+    public static <T extends ConfigApi> T getConfig(Class<T> configClass) {
         return (T) configs.get(configClass);
     }
 
-    public static boolean isRegistered(Class<?> configClass) {
+    /**
+     * Check whether a configuration class is registered.
+     */
+    public static boolean isRegistered(Class<? extends ConfigApi> configClass) {
         return configs.containsKey(configClass);
     }
 
+    /**
+     * Unregister all configurations (useful for reloads or testing).
+     */
     public static void clearConfigs() {
         configs.clear();
     }
 }
+

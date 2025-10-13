@@ -1,4 +1,4 @@
-package dev.smootheez.smoothiezapi.annotations;
+package dev.smootheez.smoothiezapi.api;
 
 import java.lang.annotation.*;
 

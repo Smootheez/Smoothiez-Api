@@ -43,3 +43,4 @@ bin/
 .DS_Store
 /1.21.9/run/
 /.idea/
+/1.21.9/logs/

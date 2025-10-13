@@ -4,7 +4,7 @@ import dev.smootheez.smoothiezapi.config.serializer.*;
 
 import java.util.*;
 
-public class ConfigOption<T> implements BaseConfigOption {
+public class ConfigOption<T> {
     private final String key;
     private T value;
     private final T minValue;
@@ -55,12 +55,10 @@ public class ConfigOption<T> implements BaseConfigOption {
         return new ConfigOption<>(key, defaultValue, new EnumSerializer<>(enumClass));
     }
 
-    @Override
     public String getKey() {
         return key;
     }
 
-    @Override
     public T getValue() {
         return value;
     }
@@ -69,28 +67,18 @@ public class ConfigOption<T> implements BaseConfigOption {
         this.value = value;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void setValueUnsafe(Object value) {
-        this.value = (T) value;
-    }
-
-    @Override
     public T getDefaultValue() {
         return defaultValue;
     }
 
-    @Override
     public T getMinValue() {
         return minValue;
     }
 
-    @Override
     public T getMaxValue() {
         return maxValue;
     }
 
-    @Override
     public ConfigOptionSerializer<T> getSerializer() {
         return serializer;
     }
