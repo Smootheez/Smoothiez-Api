@@ -25,7 +25,8 @@ public class SmoothiezApi implements ModInitializer {
         Collection<ConfigApi> configs = FabricLoader.getInstance().getEntrypoints(Constants.MOD_ID, ConfigApi.class);
         for (ConfigApi config : configs) {
             Class<? extends ConfigApi> configClass = config.getClass();
-            if (configClass.isAnnotationPresent(Config.class)) ConfigManager.register(configClass.getDeclaredConstructor().newInstance());
+            if (configClass.isAnnotationPresent(Config.class))
+                ConfigManager.register(configClass.getDeclaredConstructor().newInstance());
         }
     }
 }

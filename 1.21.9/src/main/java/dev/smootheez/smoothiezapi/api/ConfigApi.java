@@ -36,12 +36,18 @@ public interface ConfigApi {
         }
     }
 
+    /**
+     * Saves the configuration to the file system.
+     */
     default void saveConfig() {
         getWriter().saveConfig();
     }
 
+    /**
+     * Loads the configuration from the file system.
+     * The default implementation uses the {@link ConfigWriter} to load the config.
+     */
     default void loadConfig() {
         getWriter().loadConfig();
     }
 }
-

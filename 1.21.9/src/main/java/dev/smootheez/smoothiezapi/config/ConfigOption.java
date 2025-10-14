@@ -7,6 +7,7 @@ import java.util.*;
 public class ConfigOption<T> {
     private final String key;
     private T value;
+    private T oldValue;
     private final T minValue;
     private final T maxValue;
     private final T defaultValue;
@@ -64,7 +65,12 @@ public class ConfigOption<T> {
     }
 
     public void setValue(T value) {
+        this.oldValue = this.value;
         this.value = value;
+    }
+
+    public T getOldValue() {
+        return oldValue;
     }
 
     public T getDefaultValue() {
@@ -87,17 +93,24 @@ public class ConfigOption<T> {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ConfigOption<?> that = (ConfigOption<?>) o;
-        return Objects.equals(getKey(), that.getKey())
-                && Objects.equals(getValue(), that.getValue())
-                && Objects.equals(getMinValue(), that.getMinValue())
-                && Objects.equals(getMaxValue(), that.getMaxValue())
-                && Objects.equals(getDefaultValue(), that.getDefaultValue())
-                && Objects.equals(getSerializer(), that.getSerializer());
+        return Objects.equals(getKey(), that.getKey()) &&
+                Objects.equals(getValue(), that.getValue()) &&
+                Objects.equals(getOldValue(), that.getOldValue()) &&
+                Objects.equals(getMinValue(), that.getMinValue()) &&
+                Objects.equals(getMaxValue(), that.getMaxValue()) &&
+                Objects.equals(getDefaultValue(), that.getDefaultValue()) &&
+                Objects.equals(getSerializer(), that.getSerializer());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKey(), getValue(), getMinValue(), getMaxValue(), getDefaultValue(), getSerializer());
+        return Objects.hash(getKey(),
+                getValue(),
+                getOldValue(),
+                getMinValue(),
+                getMaxValue(),
+                getDefaultValue(),
+                getSerializer());
     }
 
     @Override
@@ -105,6 +118,7 @@ public class ConfigOption<T> {
         return "ConfigOption{" +
                 "key='" + key + '\'' +
                 ", value=" + value +
+                ", oldValue=" + oldValue +
                 ", minValue=" + minValue +
                 ", maxValue=" + maxValue +
                 ", defaultValue=" + defaultValue +

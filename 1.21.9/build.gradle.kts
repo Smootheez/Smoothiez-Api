@@ -8,6 +8,7 @@ val minecraftVersion: String by project
 val loaderVersion: String by project
 val modid: String by project
 val fabricApi: String by project
+val modmenuVersion: String by project
 
 version = modVersion
 
@@ -22,6 +23,13 @@ loom {
     accessWidenerPath.set(file("src/main/resources/${modid}.accesswidener"))
 }
 
+repositories {
+    maven {
+        name = "Terraformers"
+        url = uri("https://maven.terraformersmc.com/")
+    }
+}
+
 dependencies {
     implementation(project(":common"))
     include(project(":common"))
@@ -32,6 +40,9 @@ dependencies {
 
     modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
     modLocalRuntime("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
+
+    modCompileOnly("com.terraformersmc:modmenu:${modmenuVersion}")
+    modLocalRuntime("com.terraformersmc:modmenu:${modmenuVersion}")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")

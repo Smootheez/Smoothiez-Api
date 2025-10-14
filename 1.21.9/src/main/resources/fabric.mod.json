@@ -23,6 +23,9 @@
     ],
     "smoothiezapi": [
       "dev.smootheez.smoothiezapi.example.ExampleConfig"
+    ],
+    "modmenu": [
+      "dev.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
     ]
   },
   "accessWidener": "smoothiezapi.accesswidener",
