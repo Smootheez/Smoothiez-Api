@@ -5,13 +5,17 @@ import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.network.chat.*;
+import net.minecraft.util.*;
+import org.jetbrains.annotations.*;
+
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class ExampleListWidget extends ObjectSelectionList<ExampleListWidget.ExampleEntry> {
     public ExampleListWidget(Minecraft minecraft, int i, int j, int k) {
-        super(minecraft, i, j, k, 16);
+        super(minecraft, i, j, k, 18);
         for (int l = 0; l < 100; l++) {
-            this.addEntry(new ExampleEntry(Component.literal("Entry number " + (l + 1) )));
+            this.addEntry(new ExampleEntry(Component.literal("Entry Widget Number " + (l + 1) )));
         }
 
         this.setScrollAmount(this.scrollAmount());
@@ -36,24 +40,29 @@ public class ExampleListWidget extends ObjectSelectionList<ExampleListWidget.Exa
     @Environment(EnvType.CLIENT)
     public static class ExampleEntry extends ObjectSelectionList.Entry<ExampleEntry> {
         private final Component label;
+        private final Font font = Minecraft.getInstance().font;
 
         public ExampleEntry(Component label) {
             this.label = label;
         }
 
         @Override
-        public Component getNarration() {
+        public @NotNull Component getNarration() {
             return this.label;
         }
 
         @Override
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float delta) {
-            int k = this.getContentX() - 1;
-            int l = this.getContentY() - 1;
-            int m = this.getContentRight() + 1;
-            int n = this.getContentBottom() + 1;
-            guiGraphics.fill(k, l, m, n, -8978432);
-            guiGraphics.drawCenteredString(Minecraft.getInstance().font, this.label, this.getX() + this.getWidth() / 2, this.getContentYMiddle() - 9 / 2, -1);
+            int left = this.getContentX() + 8;
+            int top = this.getContentY() + 2;
+            List<FormattedCharSequence> labels = font.split(label, this.getContentWidth() - 16);
+
+            // Background
+            guiGraphics.fill(this.getContentX() - 1, this.getContentY() - 1,
+                    this.getContentRight() + 1, this.getContentBottom() + 1, 0x80000000);
+
+            // Draw each wrapped line
+            guiGraphics.drawString(font, labels.getFirst(), left, top, -1);
         }
     }
 }

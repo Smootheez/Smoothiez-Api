@@ -10,11 +10,11 @@ import net.minecraft.network.chat.*;
 @Environment(EnvType.CLIENT)
 public class ConfigScreen extends Screen {
     private final Screen parent;
-    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 8 + 9 + 8 + 20 + 4, 60);
+    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
     private ExampleListWidget exampleListWidget;
 
     public ConfigScreen(Screen parent) {
-        super(Component.translatable("config.screen.title"));
+        super(Component.literal("Exampe Screen Title"));
         this.parent = parent;
     }
 
@@ -24,7 +24,9 @@ public class ConfigScreen extends Screen {
         headerLayout.defaultCellSetting().alignHorizontallyCenter();
         headerLayout.addChild(new StringWidget(this.title, this.font));
         LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(8));
-        footerLayout.addChild(Button.builder(Component.literal("Close"),
+        footerLayout.addChild(Button.builder(CommonComponents.GUI_BACK,
+                btn -> onClose()).build());
+        footerLayout.addChild(Button.builder(CommonComponents.GUI_CONTINUE,
                 btn -> onClose()).build());
 
         this.exampleListWidget = new ExampleListWidget(
