@@ -83,4 +83,3 @@ java {
     }
     withSourcesJar()
 }
-
