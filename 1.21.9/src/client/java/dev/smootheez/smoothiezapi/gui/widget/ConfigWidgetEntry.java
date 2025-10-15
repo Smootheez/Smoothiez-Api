@@ -8,9 +8,9 @@ import java.util.*;
 
 public abstract class ConfigWidgetEntry extends ContainerObjectSelectionList.Entry<ConfigWidgetEntry> {
     @Nullable
-    private final List<FormattedCharSequence> description;
+    public final List<FormattedCharSequence> tooltip;
 
-    protected ConfigWidgetEntry(@Nullable List<FormattedCharSequence> description) {
-        this.description = description;
+    protected ConfigWidgetEntry(@Nullable List<FormattedCharSequence> tooltip) {
+        this.tooltip = tooltip;
     }
 }

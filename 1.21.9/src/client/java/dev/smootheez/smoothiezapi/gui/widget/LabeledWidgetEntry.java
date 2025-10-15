@@ -31,7 +31,8 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
         this.option = option;
 
         this.labelWidget = new StringWidget(label, Minecraft.getInstance().font);
-        this.resetButton = Button.builder(Component.literal("⭮"), button -> this.resetButtonAction()).size(20, 20).build();
+        this.resetButton = Button.builder(Component.literal("⭮"),
+                button -> this.resetButtonAction()).size(20, 20).build();
 
         addChild(this.labelWidget);
         addRightAlignedWidget(this.resetButton);
@@ -48,9 +49,12 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
         this.rightAlignedWidget.add(widget);
     }
 
-
     public boolean isModified() {
         return !this.option.getValue().equals(this.option.getOldValue());
+    }
+
+    public boolean isDefaultValue() {
+        return this.option.getValue().equals(this.option.getDefaultValue());
     }
 
     private void resetButtonAction() {
@@ -60,7 +64,7 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     }
 
     private void updateResetButtonState() {
-        this.resetButton.active = !this.option.getValue().equals(this.option.getDefaultValue());
+        this.resetButton.active = !isDefaultValue();
     }
 
     protected void updateWidgetState() {
@@ -80,8 +84,7 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
 
         // Label remains anchored to the left
         this.labelWidget.setMaxWidth(leftBoundary - contentX - H_PADDING, StringWidget.TextOverflow.SCROLLING);
-        this.labelWidget.setX(contentX + H_PADDING + 2);
-        this.labelWidget.setY(getContentYMiddle() - this.labelWidget.getHeight() / 2);
+        this.labelWidget.setPosition(contentX + H_PADDING + 2, getContentYMiddle() - this.labelWidget.getHeight() / 2);
 
         // Render
         this.labelWidget.render(guiGraphics, mouseX, mouseY, delta);

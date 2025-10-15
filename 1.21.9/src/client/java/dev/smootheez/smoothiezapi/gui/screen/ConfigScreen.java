@@ -13,6 +13,8 @@ public class ConfigScreen extends Screen {
     private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
     private OptionListWidgetContainer optionListWidgetContainer;
     private ConfigWidgetContainer configWidgetContainer;
+    private Button resetAll;
+    private Button saveAndQuit;
 
     public ConfigScreen(Screen parent) {
         super(Component.literal("Exampe Screen Title"));
@@ -27,12 +29,12 @@ public class ConfigScreen extends Screen {
         LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(4));
         footerLayout.addChild(Button.builder(CommonComponents.GUI_CANCEL,
                 btn -> onClose()).size(80, 20).build());
-        Button resetAll = Button.builder(Component.literal("Reset All"),
+        resetAll = Button.builder(Component.literal("Reset All"),
                 btn -> onClose()).size(80, 20).build();
-        resetAll.active = false;
         footerLayout.addChild(resetAll);
-        footerLayout.addChild(Button.builder(Component.literal("Save & Quit"),
-                btn -> onClose()).size(80, 20).build());
+        saveAndQuit = Button.builder(Component.literal("Save & Quit"),
+                btn -> onClose()).size(80, 20).build();
+        footerLayout.addChild(saveAndQuit);
 
         /*this.optionListWidgetContainer = new OptionListWidgetContainer(
                 this.minecraft,
@@ -50,7 +52,6 @@ public class ConfigScreen extends Screen {
         );
         this.addRenderableWidget(configWidgetContainer);
 
-
         this.layout.visitWidgets(this::addRenderableWidget);
         this.layout.arrangeElements();
     }
@@ -64,6 +65,13 @@ public class ConfigScreen extends Screen {
         if (configWidgetContainer != null) {
             this.configWidgetContainer.updateSizeAndPosition(this.width, this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
         }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.resetAll.active = !configWidgetContainer.isDefaultValue();
+        this.saveAndQuit.active = !configWidgetContainer.isModified(); // TODO: Fix this logic because the button didnt get updated
     }
 
     @Override
