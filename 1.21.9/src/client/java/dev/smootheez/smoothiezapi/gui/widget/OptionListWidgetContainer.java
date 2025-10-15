@@ -11,11 +11,11 @@ import org.jetbrains.annotations.*;
 import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class ExampleListWidget extends ObjectSelectionList<ExampleListWidget.ExampleEntry> {
-    public ExampleListWidget(Minecraft minecraft, int i, int j, int k) {
+public class OptionListWidgetContainer extends ObjectSelectionList<OptionListWidgetContainer.Entry> {
+    public OptionListWidgetContainer(Minecraft minecraft, int i, int j, int k) {
         super(minecraft, i, j, k, 18);
         for (int l = 0; l < 100; l++) {
-            this.addEntry(new ExampleEntry(Component.literal("Entry Widget Number " + (l + 1) )));
+            this.addEntry(new Entry(Component.literal("Entry Widget Number " + (l + 1) )));
         }
 
         this.setScrollAmount(this.scrollAmount());
@@ -38,11 +38,11 @@ public class ExampleListWidget extends ObjectSelectionList<ExampleListWidget.Exa
     }
 
     @Environment(EnvType.CLIENT)
-    public static class ExampleEntry extends ObjectSelectionList.Entry<ExampleEntry> {
+    public static class Entry extends ObjectSelectionList.Entry<Entry> {
         private final Component label;
         private final Font font = Minecraft.getInstance().font;
 
-        public ExampleEntry(Component label) {
+        public Entry(Component label) {
             this.label = label;
         }
 
@@ -54,7 +54,7 @@ public class ExampleListWidget extends ObjectSelectionList<ExampleListWidget.Exa
         @Override
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float delta) {
             int left = this.getContentX() + 8;
-            int top = this.getContentY() + 2;
+            int top = this.getContentY() + 3;
             List<FormattedCharSequence> labels = font.split(label, this.getContentWidth() - 16);
 
             // Background
