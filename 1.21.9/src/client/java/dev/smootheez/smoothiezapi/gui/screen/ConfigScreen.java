@@ -71,7 +71,7 @@ public class ConfigScreen extends Screen {
     public void tick() {
         super.tick();
         this.resetAll.active = !configWidgetContainer.isDefaultValue();
-        this.saveAndQuit.active = !configWidgetContainer.isModified(); // TODO: Fix this logic because the button didnt get updated
+        this.saveAndQuit.active = configWidgetContainer.isModified();
     }
 
     @Override

@@ -13,26 +13,22 @@ public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWi
     public ConfigWidgetContainer(Minecraft minecraft, int i, int j, int k) {
         super(minecraft, i, j, k, 24);
         ExampleConfig config = ConfigManager.getConfig(ExampleConfig.class);
-        this.addEntry(new LabeledWidgetEntry<>(Component.literal("Boolean example"), null, config.getBooleanExample()));
+        this.addEntry(new BooleanWidgetEntry(Component.literal("Boolean example"), null, config.getBooleanExample()));
+        this.addEntry(new CycleWidgetEntry<>(Component.literal("Cycle example"), null, config.getEnumExample()));
 
         this.setScrollAmount(this.scrollAmount());
     }
 
     public boolean isDefaultValue() {
-        for (ConfigWidgetEntry widgetEntry : this.children()) {
-            if (widgetEntry instanceof LabeledWidgetEntry<?> labeledWidgetEntry && labeledWidgetEntry.isDefaultValue())
-                return true;
-        }
-        return false;
+        return this.children().stream()
+                .anyMatch(entry -> entry instanceof LabeledWidgetEntry<?> labeled && labeled.isDefaultValue());
     }
 
     public boolean isModified() {
-        for (ConfigWidgetEntry widgetEntry : this.children()) {
-            if (widgetEntry instanceof LabeledWidgetEntry<?> labeledWidgetEntry && labeledWidgetEntry.isModified())
-                return true;
-        }
-        return false;
+        return this.children().stream()
+                .anyMatch(entry -> entry instanceof LabeledWidgetEntry<?> labeled && labeled.isModified());
     }
+
 
     @Override
     public int getRowWidth() {

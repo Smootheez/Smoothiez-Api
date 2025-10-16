@@ -12,48 +12,53 @@ public class ConfigOption<T> {
     private final T maxValue;
     private final T defaultValue;
     private final ConfigOptionSerializer<T> serializer;
+    private final Class<T> type;
 
-    private ConfigOption(String key, T defaultValue, ConfigOptionSerializer<T> serializer) {
+    private ConfigOption(String key, T defaultValue, ConfigOptionSerializer<T> serializer, Class<T> type) {
         this.key = key;
         this.defaultValue = defaultValue;
         this.value = defaultValue;
+        this.type = type;
         this.minValue = null;
         this.maxValue = null;
+        this.oldValue = defaultValue;
         this.serializer = serializer;
     }
 
-    private ConfigOption(String key, T defaultValue, T minValue, T maxValue, ConfigOptionSerializer<T> serializer) {
+    private ConfigOption(String key, T defaultValue, T minValue, T maxValue, ConfigOptionSerializer<T> serializer, Class<T> type) {
         this.key = key;
         this.defaultValue = defaultValue;
         this.value = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.oldValue = defaultValue;
         this.serializer = serializer;
+        this.type = type;
     }
 
     public static ConfigOption<Boolean> create(String key, Boolean defaultValue) {
-        return new ConfigOption<>(key, defaultValue, new BooleanSerializer());
+        return new ConfigOption<>(key, defaultValue, new BooleanSerializer(), Boolean.class);
     }
 
     public static ConfigOption<Integer> create(String key, Integer defaultValue, Integer minValue, Integer maxValue) {
-        return new ConfigOption<>(key, defaultValue, minValue, maxValue, new IntegerSerializer());
+        return new ConfigOption<>(key, defaultValue, minValue, maxValue, new IntegerSerializer(), Integer.class);
     }
 
     public static ConfigOption<Double> create(String key, Double defaultValue, Double minValue, Double maxValue) {
-        return new ConfigOption<>(key, defaultValue, minValue, maxValue, new DoubleSerializer());
+        return new ConfigOption<>(key, defaultValue, minValue, maxValue, new DoubleSerializer(), Double.class);
     }
 
     public static ConfigOption<String> create(String key, String defaultValue) {
-        return new ConfigOption<>(key, defaultValue, new StringSerializer());
+        return new ConfigOption<>(key, defaultValue, new StringSerializer(), String.class);
     }
 
     public static ConfigOption<OptionList> create(String key, String... defaultValue) {
-        return new ConfigOption<>(key, new OptionList(Arrays.asList(defaultValue)), new OptionListSerializer());
+        return new ConfigOption<>(key, new OptionList(Arrays.asList(defaultValue)), new OptionListSerializer(), OptionList.class);
     }
 
     public static <E extends Enum<E>> ConfigOption<E> create(String key, E defaultValue) {
         Class<E> enumClass = defaultValue.getDeclaringClass();
-        return new ConfigOption<>(key, defaultValue, new EnumSerializer<>(enumClass));
+        return new ConfigOption<>(key, defaultValue, new EnumSerializer<>(enumClass), enumClass);
     }
 
     public String getKey() {
@@ -65,8 +70,11 @@ public class ConfigOption<T> {
     }
 
     public void setValue(T value) {
-        this.oldValue = this.value;
         this.value = value;
+    }
+
+    public void commit() {
+        this.oldValue = this.value;
     }
 
     public T getOldValue() {
@@ -83,6 +91,10 @@ public class ConfigOption<T> {
 
     public T getMaxValue() {
         return maxValue;
+    }
+
+    public Class<T> getType() {
+        return type;
     }
 
     public ConfigOptionSerializer<T> getSerializer() {

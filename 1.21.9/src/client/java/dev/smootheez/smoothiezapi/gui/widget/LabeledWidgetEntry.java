@@ -2,6 +2,7 @@ package dev.smootheez.smoothiezapi.gui.widget;
 
 import com.google.common.collect.*;
 import dev.smootheez.smoothiezapi.config.*;
+import dev.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.*;
 import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
+public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     protected final ConfigOption<T> option;
     protected final List<AbstractWidget> children = Lists.newArrayList();
     protected final List<AbstractWidget> rightAlignedWidget = new ArrayList<>();
@@ -26,7 +27,7 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     private static final int V_CENTER_OFFSET = 0; // tweak if vertically misaligned
     private static final int SPACING = 3;
 
-    public LabeledWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
+    protected LabeledWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
         super(description);
         this.option = option;
 
@@ -54,7 +55,10 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     }
 
     public boolean isDefaultValue() {
-        return this.option.getValue().equals(this.option.getDefaultValue());
+        T currentValue = this.option.getValue();
+        T defaultValue = this.option.getDefaultValue();
+        Constants.LOGGER.info("Current value: {}, `Default value: {}", currentValue, defaultValue);
+        return currentValue.equals(defaultValue);
     }
 
     private void resetButtonAction() {
@@ -63,7 +67,7 @@ public class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
         updateResetButtonState();
     }
 
-    private void updateResetButtonState() {
+    void updateResetButtonState() {
         this.resetButton.active = !isDefaultValue();
     }
 
