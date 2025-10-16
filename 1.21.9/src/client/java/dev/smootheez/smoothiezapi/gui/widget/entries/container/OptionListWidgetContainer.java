@@ -1,4 +1,4 @@
-package dev.smootheez.smoothiezapi.gui.widget;
+package dev.smootheez.smoothiezapi.gui.widget.entries.container;
 
 import net.fabricmc.api.*;
 import net.minecraft.client.*;

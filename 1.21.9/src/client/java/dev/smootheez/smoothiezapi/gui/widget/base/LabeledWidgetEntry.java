@@ -1,4 +1,4 @@
-package dev.smootheez.smoothiezapi.gui.widget;
+package dev.smootheez.smoothiezapi.gui.widget.base;
 
 import com.google.common.collect.*;
 import dev.smootheez.smoothiezapi.config.*;
@@ -50,10 +50,6 @@ public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
         this.rightAlignedWidget.add(widget);
     }
 
-    public boolean isModified() {
-        return !this.option.getValue().equals(this.option.getOldValue());
-    }
-
     public boolean isDefaultValue() {
         T currentValue = this.option.getValue();
         T defaultValue = this.option.getDefaultValue();
@@ -67,7 +63,7 @@ public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
         updateResetButtonState();
     }
 
-    void updateResetButtonState() {
+    protected void updateResetButtonState() {
         this.resetButton.active = !isDefaultValue();
     }
 

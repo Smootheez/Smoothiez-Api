@@ -1,4 +1,4 @@
-package dev.smootheez.smoothiezapi.gui.widget;
+package dev.smootheez.smoothiezapi.gui.widget.base;
 
 import net.minecraft.client.gui.components.*;
 import net.minecraft.util.*;

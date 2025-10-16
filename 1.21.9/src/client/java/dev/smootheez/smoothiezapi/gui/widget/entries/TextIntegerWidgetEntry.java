@@ -1,0 +1,35 @@
+package dev.smootheez.smoothiezapi.gui.widget.entries;
+
+import dev.smootheez.smoothiezapi.config.*;
+import dev.smootheez.smoothiezapi.gui.widget.base.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.util.*;
+import org.jetbrains.annotations.*;
+
+import java.util.*;
+
+public class TextIntegerWidgetEntry extends TextWidgetEntry<Integer> {
+    public TextIntegerWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<Integer> option) {
+        super(label, description, option);
+    }
+
+    @Override
+    protected void textFieldResponder(String s) {
+        if (validateInteger(s) && Integer.parseInt(s) >= this.option.getMinValue() && Integer.parseInt(s) <= this.option.getMaxValue()) {
+            this.option.setValue(Integer.valueOf(s));
+            this.textField.setTextColor(-2039584);
+        } else {
+            this.textField.setTextColor(-65536);
+        }
+        super.textFieldResponder(s);
+    }
+
+    private boolean validateInteger(String string) {
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+}

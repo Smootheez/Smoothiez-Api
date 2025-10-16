@@ -1,6 +1,7 @@
-package dev.smootheez.smoothiezapi.gui.widget;
+package dev.smootheez.smoothiezapi.gui.widget.entries;
 
 import dev.smootheez.smoothiezapi.config.*;
+import dev.smootheez.smoothiezapi.gui.widget.base.*;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.network.chat.*;
 import net.minecraft.util.*;
@@ -11,7 +12,7 @@ import java.util.*;
 public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
     private final CycleButton<T> cycleButton;
 
-    protected CycleWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
+    public CycleWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
         super(label, description, option);
         T[] enumValues = this.option.getType().getEnumConstants();
 

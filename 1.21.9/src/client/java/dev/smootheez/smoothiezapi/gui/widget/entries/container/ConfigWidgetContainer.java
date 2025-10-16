@@ -1,7 +1,9 @@
-package dev.smootheez.smoothiezapi.gui.widget;
+package dev.smootheez.smoothiezapi.gui.widget.entries.container;
 
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.example.*;
+import dev.smootheez.smoothiezapi.gui.widget.base.*;
+import dev.smootheez.smoothiezapi.gui.widget.entries.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
@@ -15,20 +17,12 @@ public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWi
         ExampleConfig config = ConfigManager.getConfig(ExampleConfig.class);
         this.addEntry(new BooleanWidgetEntry(Component.literal("Boolean example"), null, config.getBooleanExample()));
         this.addEntry(new CycleWidgetEntry<>(Component.literal("Cycle example"), null, config.getEnumExample()));
+        this.addEntry(new TextIntegerWidgetEntry(Component.literal("Integer example"), null, config.getIntegerExample()));
+        this.addEntry(new TextDoubleWidgetEntry(Component.literal("Double example"), null, config.getDoubleExample()));
+        this.addEntry(new TextStringWidgetEntry(Component.literal("String example"), null, config.getStringExample()));
 
         this.setScrollAmount(this.scrollAmount());
     }
-
-    public boolean isDefaultValue() {
-        return this.children().stream()
-                .anyMatch(entry -> entry instanceof LabeledWidgetEntry<?> labeled && labeled.isDefaultValue());
-    }
-
-    public boolean isModified() {
-        return this.children().stream()
-                .anyMatch(entry -> entry instanceof LabeledWidgetEntry<?> labeled && labeled.isModified());
-    }
-
 
     @Override
     public int getRowWidth() {
