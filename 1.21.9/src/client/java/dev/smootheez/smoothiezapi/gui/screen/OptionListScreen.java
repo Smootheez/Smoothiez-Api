@@ -18,15 +18,15 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class OptionListScreen extends Screen {
-
     public static final String SCREEN = "screen.";
     /* ------------------------------------------------------------
      * Fields
      * ------------------------------------------------------------ */
     private final Screen parent;
     private final OptionListWidgetEntry widgetEntry;
-    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
+    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 50, 30);
     private WidgetContainer widgetContainer;
+    private EditBox editBox;
 
     /* ------------------------------------------------------------
      * Constructor
@@ -42,8 +42,14 @@ public class OptionListScreen extends Screen {
      * ------------------------------------------------------------ */
     @Override
     protected void init() {
-        // Title
-        this.layout.addTitleHeader(this.title, this.font);
+        this.widgetContainer = new WidgetContainer();
+
+        LinearLayout headerLayout = this.layout.addToHeader(LinearLayout.vertical().spacing(4));
+        headerLayout.defaultCellSetting().alignHorizontallyCenter();
+        headerLayout.addChild(new StringWidget(this.title, this.font));
+        editBox = new EditBox(this.font, this.layout.getWidth() / 2 - 100, 22, 200, 20, Component.literal(""));
+        editBox.setResponder(widgetContainer::filter);
+        headerLayout.addChild(editBox);
 
         // Footer buttons
         LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(4));
@@ -56,11 +62,17 @@ public class OptionListScreen extends Screen {
                 }).build());
 
         // List container
-        this.widgetContainer = this.addRenderableWidget(new WidgetContainer());
+        this.addRenderableWidget(this.widgetContainer);
 
         // Final layout setup
         this.layout.visitWidgets(this::addRenderableWidget);
         repositionElements();
+    }
+
+    @Override
+    protected void setInitialFocus() {
+        if (this.editBox != null)
+            this.setInitialFocus(this.editBox);
     }
 
     @Override
@@ -87,12 +99,20 @@ public class OptionListScreen extends Screen {
     @Environment(EnvType.CLIENT)
     private class WidgetContainer extends ContainerObjectSelectionList<WidgetEntry> {
         private final ConfigOption<OptionList> option;
+        private String filter = "";
 
         public WidgetContainer() {
             super(OptionListScreen.this.minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
             this.option = widgetEntry.getOption();
+
             refreshEntries();
+
             this.setScrollAmount(this.scrollAmount());
+        }
+
+        public void filter(String search) {
+            this.filter = search == null ? "" : search.trim();
+            refreshEntries();
         }
 
         public void removeValue(String value) {
@@ -104,7 +124,11 @@ public class OptionListScreen extends Screen {
 
         private void refreshEntries() {
             this.clearEntries();
-            option.getValue().values().forEach(value -> this.addEntry(new WidgetEntry(value)));
+            option.getValue().values().stream()
+                    .filter(value -> value.toLowerCase(Locale.ROOT).contains(filter.toLowerCase(Locale.ROOT)))
+                    .forEach(value -> this.addEntry(new WidgetEntry(value)));
+
+            this.setScrollAmount(0);
         }
 
         @Override
