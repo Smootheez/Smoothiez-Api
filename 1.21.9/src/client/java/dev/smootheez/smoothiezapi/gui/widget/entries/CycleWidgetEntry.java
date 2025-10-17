@@ -2,6 +2,7 @@ package dev.smootheez.smoothiezapi.gui.widget.entries;
 
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.gui.widget.base.*;
+import net.fabricmc.api.*;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.network.chat.*;
 import net.minecraft.util.*;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.*;
 
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
     private final CycleButton<T> cycleButton;
 
@@ -22,7 +24,7 @@ public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
                 .withInitialValue(this.option.getValue())
                 .create(0, 0, 80, 20, Component.literal(""),
                         (cycleButton1, value) -> {
-                            this.option.setValue(value);
+                            setOptionValue(value);
                             updateResetButtonState();
                         });
 

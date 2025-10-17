@@ -8,18 +8,20 @@ import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.layouts.*;
 import net.minecraft.network.chat.*;
 
 @Environment(EnvType.CLIENT)
 public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWidgetEntry> {
-    public ConfigWidgetContainer(Minecraft minecraft, int i, int j, int k) {
-        super(minecraft, i, j, k, 24);
+    public ConfigWidgetContainer(Minecraft minecraft, HeaderAndFooterLayout layout) {
+        super(minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
         ExampleConfig config = ConfigManager.getConfig(ExampleConfig.class);
         this.addEntry(new BooleanWidgetEntry(Component.literal("Boolean example"), null, config.getBooleanExample()));
         this.addEntry(new CycleWidgetEntry<>(Component.literal("Cycle example"), null, config.getEnumExample()));
         this.addEntry(new TextIntegerWidgetEntry(Component.literal("Integer example"), null, config.getIntegerExample()));
         this.addEntry(new TextDoubleWidgetEntry(Component.literal("Double example"), null, config.getDoubleExample()));
         this.addEntry(new TextStringWidgetEntry(Component.literal("String example"), null, config.getStringExample()));
+        this.addEntry(new OptionListWidgetEntry(Component.literal("Option List example"), null, config.getOptionListExample()));
 
         this.setScrollAmount(this.scrollAmount());
     }

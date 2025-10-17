@@ -1,6 +1,7 @@
 package dev.smootheez.smoothiezapi.gui.widget.base;
 
 import dev.smootheez.smoothiezapi.config.*;
+import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.network.chat.*;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.*;
 
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 public abstract class TextWidgetEntry<T> extends LabeledWidgetEntry<T>  {
     protected final EditBox textField;
 

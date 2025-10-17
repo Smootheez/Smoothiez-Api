@@ -41,6 +41,10 @@ public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
         updateResetButtonState();
     }
 
+    public void setOptionValue(T value) {
+        this.option.setValue(value);
+    }
+
     protected void addChild(AbstractWidget widget) {
         this.children.add(widget);
     }

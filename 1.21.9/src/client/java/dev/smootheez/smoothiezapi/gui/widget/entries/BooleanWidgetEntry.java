@@ -20,7 +20,7 @@ public class BooleanWidgetEntry extends LabeledWidgetEntry<Boolean> {
                 .displayOnlyValue()
                 .create(0, 0, 80, 20, Component.literal(""),
                         (cycleButton, value) -> {
-                            this.option.setValue(value);
+                            setOptionValue(value);
                             updateResetButtonState();
                         });
 

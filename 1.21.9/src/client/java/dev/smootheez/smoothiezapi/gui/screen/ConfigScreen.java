@@ -20,18 +20,16 @@ public class ConfigScreen extends Screen {
 
     @Override
     protected void init() {
+        this.layout.addTitleHeader(this.title, this.font);
         LinearLayout headerLayout = this.layout.addToHeader(LinearLayout.vertical().spacing(4));
         headerLayout.defaultCellSetting().alignHorizontallyCenter();
-        headerLayout.addChild(new StringWidget(this.title, this.font));
-        LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(4));
+        LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal());
         footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE,
                 btn -> onClose()).build());
 
         this.configWidgetContainer = new ConfigWidgetContainer(
                 this.minecraft,
-                this.width,
-                this.layout.getContentHeight(),
-                this.layout.getHeaderHeight()
+                this.layout
         );
         this.addRenderableWidget(configWidgetContainer);
 
@@ -43,7 +41,7 @@ public class ConfigScreen extends Screen {
     protected void repositionElements() {
         this.layout.arrangeElements();
         if (configWidgetContainer != null) {
-            this.configWidgetContainer.updateSizeAndPosition(this.width, this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
+            this.configWidgetContainer.updateSizeAndPosition(this.layout.getWidth(), this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
         }
     }
 
