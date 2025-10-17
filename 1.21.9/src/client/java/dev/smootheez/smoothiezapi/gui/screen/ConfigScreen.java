@@ -11,37 +11,45 @@ import net.minecraft.network.chat.*;
 @Environment(EnvType.CLIENT)
 public class ConfigScreen extends Screen {
     private final Screen parent;
-    private final String configId;
     private final ConfigApi configApi;
-    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
+    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 50, 30);
     private ConfigWidgetContainer configWidgetContainer;
+    private EditBox searchBox;
 
     public ConfigScreen(Screen parent, ConfigApi configApi) {
         super(Component.translatable("config.screen." + configApi.getConfigId() + ".title"));
         this.parent = parent;
-        this.configId = configApi.getConfigId();
         this.configApi = configApi;
     }
 
     @Override
     protected void init() {
-        this.layout.addTitleHeader(this.title, this.font);
-        LinearLayout headerLayout = this.layout.addToHeader(LinearLayout.vertical().spacing(4));
-        headerLayout.defaultCellSetting().alignHorizontallyCenter();
-        LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal());
-        footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE,
-                btn -> onClose()).build());
-
         this.configWidgetContainer = new ConfigWidgetContainer(
                 this.minecraft,
                 this.layout,
-                configId,
-                configApi.getAllConfigOptions()
+                configApi
         );
+
+        LinearLayout headerLayout = this.layout.addToHeader(LinearLayout.vertical().spacing(4));
+        headerLayout.defaultCellSetting().alignHorizontallyCenter();
+        headerLayout.addChild(new StringWidget(this.title, this.font));
+        searchBox = new EditBox(this.font, this.layout.getWidth() / 2 - 100, 22, 200, 20, Component.literal(""));
+        searchBox.setResponder(configWidgetContainer::filter);
+        headerLayout.addChild(searchBox);
+
+        LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal());
+        footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE, btn -> onClose()).build());
+
         this.addRenderableWidget(configWidgetContainer);
 
         this.layout.visitWidgets(this::addRenderableWidget);
         this.layout.arrangeElements();
+    }
+
+    @Override
+    protected void setInitialFocus() {
+        if (this.searchBox != null)
+            this.setInitialFocus(this.searchBox);
     }
 
     @Override
@@ -54,8 +62,8 @@ public class ConfigScreen extends Screen {
     @Override
     public void onClose() {
         if (minecraft != null) {
-            this.minecraft.setScreen(this.parent);
             this.configApi.saveConfig();
+            this.minecraft.setScreen(this.parent);
         }
     }
 }

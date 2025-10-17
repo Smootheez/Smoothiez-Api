@@ -1,8 +1,10 @@
 package dev.smootheez.smoothiezapi.gui.widget.entries.container;
 
+import dev.smootheez.smoothiezapi.api.*;
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.gui.widget.base.*;
 import dev.smootheez.smoothiezapi.gui.widget.entries.handler.*;
+import dev.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
@@ -18,15 +20,42 @@ import java.util.*;
 public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWidgetEntry> {
     private final int layoutWidth;
     private final String configId;
+    private final List<ConfigOption<?>> allConfigOptions;
+    private String filter = "";
 
-    public ConfigWidgetContainer(Minecraft minecraft, HeaderAndFooterLayout layout, String configId, List<ConfigOption<?>> options) {
+    public ConfigWidgetContainer(Minecraft minecraft, HeaderAndFooterLayout layout, ConfigApi configApi) {
         super(minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
         this.layoutWidth = layout.getWidth();
-        this.configId = configId;
+        this.configId = configApi.getConfigId();
+        this.allConfigOptions = configApi.getAllConfigOptions();
 
-        options.forEach(option -> this.addEntry(createWidget(option)));
+        refreshEntries();
 
         this.setScrollAmount(this.scrollAmount());
+    }
+
+    public void filter(String search) {
+        this.filter = search;
+        refreshEntries();
+    }
+
+    // TODO: fix translation issue
+    private boolean matchesSearchTerm(ConfigOption<?> option, String search) {
+        String lowerCaseSearch = search.toLowerCase(Locale.ROOT);
+
+        String translationKey = WidgetHandler.CONFIG_WIDGET + configId + "." + option.getKey();
+        String translatedText = I18n.exists(translationKey) ?
+                I18n.get(translationKey).toLowerCase(Locale.ROOT) : option.getKey().toLowerCase(Locale.ROOT);
+        Constants.LOGGER.info("Does option has translation: {}", I18n.exists(translationKey));
+
+        return translatedText.contains(lowerCaseSearch);
+    }
+
+    private void refreshEntries() {
+        this.clearEntries();
+
+        this.allConfigOptions.stream().filter(option -> matchesSearchTerm(option, filter))
+                .forEach(option -> this.addEntry(createWidget(option)));
     }
 
     public <T> ConfigWidgetEntry createWidget(ConfigOption<T> option) {
