@@ -3,6 +3,7 @@ package dev.smootheez.smoothiezapi.gui.screen;
 import com.google.common.collect.*;
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.gui.widget.entries.*;
+import dev.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.components.*;
@@ -17,32 +18,47 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class OptionListScreen extends Screen {
+
+    public static final String SCREEN = "screen.";
+    /* ------------------------------------------------------------
+     * Fields
+     * ------------------------------------------------------------ */
     private final Screen parent;
     private final OptionListWidgetEntry widgetEntry;
     private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
     private WidgetContainer widgetContainer;
 
+    /* ------------------------------------------------------------
+     * Constructor
+     * ------------------------------------------------------------ */
     public OptionListScreen(Screen parent, OptionListWidgetEntry widgetEntry) {
-        super(Component.literal("Edit Option List"));
+        super(Component.translatable(SCREEN + Constants.MOD_ID + ".option_list.title"));
         this.parent = parent;
         this.widgetEntry = widgetEntry;
     }
 
+    /* ------------------------------------------------------------
+     * Screen lifecycle methods
+     * ------------------------------------------------------------ */
     @Override
     protected void init() {
+        // Title
         this.layout.addTitleHeader(this.title, this.font);
 
+        // Footer buttons
         LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(4));
-        footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE,
-                btn -> onClose()).build());
+        footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE, btn -> onClose()).build());
         footerLayout.addChild(Button.builder(Component.literal("Add Value"),
                 btn -> {
-                    if (this.minecraft != null)
-                        this.minecraft.setScreen(new EditOrAddValueScreen(OptionListScreen.this, ScreenActionType.ADD, ""));
+                    if (this.minecraft != null) {
+                        this.minecraft.setScreen(new EditOrAddValueScreen(this, ScreenActionType.ADD, ""));
+                    }
                 }).build());
 
+        // List container
         this.widgetContainer = this.addRenderableWidget(new WidgetContainer());
 
+        // Final layout setup
         this.layout.visitWidgets(this::addRenderableWidget);
         repositionElements();
     }
@@ -50,8 +66,14 @@ public class OptionListScreen extends Screen {
     @Override
     protected void repositionElements() {
         this.layout.arrangeElements();
-        if (this.widgetContainer != null)
-            this.widgetContainer.updateSizeAndPosition(this.layout.getWidth(), this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
+        if (this.widgetContainer != null) {
+            this.widgetContainer.updateSizeAndPosition(
+                    this.layout.getWidth(),
+                    this.layout.getContentHeight(),
+                    0,
+                    this.layout.getHeaderHeight()
+            );
+        }
     }
 
     @Override
@@ -59,6 +81,9 @@ public class OptionListScreen extends Screen {
         if (minecraft != null) this.minecraft.setScreen(this.parent);
     }
 
+    /* ------------------------------------------------------------
+     * Inner class: WidgetContainer (List container)
+     * ------------------------------------------------------------ */
     @Environment(EnvType.CLIENT)
     private class WidgetContainer extends ContainerObjectSelectionList<WidgetEntry> {
         private final ConfigOption<OptionList> option;
@@ -66,9 +91,7 @@ public class OptionListScreen extends Screen {
         public WidgetContainer() {
             super(OptionListScreen.this.minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
             this.option = widgetEntry.getOption();
-
             refreshEntries();
-
             this.setScrollAmount(this.scrollAmount());
         }
 
@@ -100,16 +123,20 @@ public class OptionListScreen extends Screen {
         }
     }
 
+    /* ------------------------------------------------------------
+     * Inner class: WidgetEntry (Single row entry)
+     * ------------------------------------------------------------ */
     @Environment(EnvType.CLIENT)
     private class WidgetEntry extends ContainerObjectSelectionList.Entry<WidgetEntry> {
+        private final String label;
         private final StringWidget labelWidget;
+
         protected final List<AbstractWidget> children = Lists.newArrayList();
         protected final List<AbstractWidget> rightAlignedWidget = new ArrayList<>();
 
         private static final int H_PADDING = 1;
         private static final int V_CENTER_OFFSET = 0; // tweak if vertically misaligned
         private static final int SPACING = 3;
-        private final String label;
 
         public WidgetEntry(String label) {
             this.label = label;
@@ -117,11 +144,15 @@ public class OptionListScreen extends Screen {
 
             addChild(this.labelWidget);
             addRightAlignedWidget(Button.builder(Component.literal("❌"),
-                    button -> OptionListScreen.this.widgetContainer.removeValue(label)).size(20, 20).build());
-            addRightAlignedWidget(Button.builder(Component.literal("Edit"),
-                    this::onPress).size(80, 20).build());
+                            button -> OptionListScreen.this.widgetContainer.removeValue(label))
+                    .size(20, 20)
+                    .build());
+            addRightAlignedWidget(Button.builder(Component.literal("Edit"), this::onPress)
+                    .size(80, 20)
+                    .build());
         }
 
+        /* ---------- Layout Helpers ---------- */
         protected void addChild(AbstractWidget widget) {
             this.children.add(widget);
         }
@@ -131,32 +162,9 @@ public class OptionListScreen extends Screen {
             this.rightAlignedWidget.add(widget);
         }
 
-        @Override
-        public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float delta) {
-            int contentX = getContentX();
-            guiGraphics.fill(
-                    contentX - 1, getContentY() - 1,
-                    getContentRight() + 1, getContentBottom() + 1,
-                    0x80000000
-            );
-
-            int leftBoundary = layoutRightAlignedWidgets(rightAlignedWidget);
-
-            // Label remains anchored to the left
-            this.labelWidget.setMaxWidth(leftBoundary - contentX - H_PADDING, StringWidget.TextOverflow.SCROLLING);
-            this.labelWidget.setPosition(contentX + H_PADDING + 2, getContentYMiddle() - this.labelWidget.getHeight() / 2);
-
-            // Render
-            this.labelWidget.render(guiGraphics, mouseX, mouseY, delta);
-            for (AbstractWidget widget : rightAlignedWidget) {
-                widget.render(guiGraphics, mouseX, mouseY, delta);
-            }
-        }
-
         private int layoutRightAlignedWidgets(List<? extends AbstractWidget> widgets) {
             int contentRight = this.getContentRight() - H_PADDING;
             int centerY = this.getContentYMiddle() + V_CENTER_OFFSET;
-
             int nextX = contentRight;
 
             // Position widgets from right to left
@@ -166,10 +174,35 @@ public class OptionListScreen extends Screen {
                 nextX -= SPACING;
             }
 
-            // Return the x-position where left-side elements (like label) can stop
-            return nextX;
+            return nextX; // left limit for label text
         }
 
+        /* ---------- Rendering ---------- */
+        @Override
+        public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float delta) {
+            int contentX = getContentX();
+
+            // Background highlight
+            guiGraphics.fill(
+                    contentX - 1, getContentY() - 1,
+                    getContentRight() + 1, getContentBottom() + 1,
+                    0x80000000
+            );
+
+            int leftBoundary = layoutRightAlignedWidgets(rightAlignedWidget);
+
+            // Label anchored left
+            this.labelWidget.setMaxWidth(leftBoundary - contentX - H_PADDING, StringWidget.TextOverflow.SCROLLING);
+            this.labelWidget.setPosition(contentX + H_PADDING + 2, getContentYMiddle() - this.labelWidget.getHeight() / 2);
+
+            // Draw label + buttons
+            this.labelWidget.render(guiGraphics, mouseX, mouseY, delta);
+            for (AbstractWidget widget : rightAlignedWidget) {
+                widget.render(guiGraphics, mouseX, mouseY, delta);
+            }
+        }
+
+        /* ---------- Event & Narration ---------- */
         @Override
         public @NotNull List<? extends NarratableEntry> narratables() {
             return this.children;
@@ -181,21 +214,27 @@ public class OptionListScreen extends Screen {
         }
 
         private void onPress(Button button) {
-            if (OptionListScreen.this.minecraft != null)
-                OptionListScreen.this.minecraft.setScreen(new EditOrAddValueScreen(OptionListScreen.this, ScreenActionType.EDIT, this.label));
+            if (OptionListScreen.this.minecraft != null) {
+                OptionListScreen.this.minecraft.setScreen(
+                        new EditOrAddValueScreen(OptionListScreen.this, ScreenActionType.EDIT, this.label)
+                );
+            }
         }
     }
 
+    /* ------------------------------------------------------------
+     * Inner class: EditOrAddValueScreen
+     * ------------------------------------------------------------ */
     @Environment(EnvType.CLIENT)
     private class EditOrAddValueScreen extends Screen {
         private final Screen parent;
         private final String label;
-        private OptionList optionList;
         private final ScreenActionType type;
+        private OptionList optionList;
         private EditBox editBox;
 
         protected EditOrAddValueScreen(Screen parent, ScreenActionType type, String label) {
-            super(Component.literal(type.getString()));
+            super(type.getComponent());
             this.parent = parent;
             this.label = label;
             this.type = type;
@@ -205,17 +244,18 @@ public class OptionListScreen extends Screen {
         protected void init() {
             optionList = widgetEntry.getOption().getValue();
 
+            // Input box
             editBox = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 50, 150, 20, Component.literal(""));
             editBox.setValue(this.label);
             this.addRenderableWidget(editBox);
 
-            Button doneButton = Button.builder(CommonComponents.GUI_DONE,
-                    btn -> updateOptionValue()).build();
+            // Done button
+            Button doneButton = Button.builder(CommonComponents.GUI_DONE, btn -> updateOptionValue()).build();
             doneButton.setPosition(this.width / 2 - doneButton.getWidth() / 2, this.height / 2 - 12);
             this.addRenderableWidget(doneButton);
 
-            Button cancelButton = Button.builder(CommonComponents.GUI_CANCEL,
-                    btn -> onClose()).build();
+            // Cancel button
+            Button cancelButton = Button.builder(CommonComponents.GUI_CANCEL, btn -> onClose()).build();
             cancelButton.setPosition(this.width / 2 - cancelButton.getWidth() / 2, this.height / 2 + 12);
             this.addRenderableWidget(cancelButton);
         }
@@ -247,20 +287,22 @@ public class OptionListScreen extends Screen {
         }
     }
 
-    // TODO: For now use literal string, change it to translatable later
+    /* ------------------------------------------------------------
+     * Enum: ScreenActionType
+     * ------------------------------------------------------------ */
     @Environment(EnvType.CLIENT)
     private enum ScreenActionType {
-        EDIT("Edit Value"),
-        ADD("Add Value");
+        EDIT(Component.translatable(SCREEN + Constants.MOD_ID + ".edit.title")),
+        ADD(Component.translatable(SCREEN + Constants.MOD_ID + ".add.title"));
 
-        private final String string;
+        private final Component component;
 
-        ScreenActionType(String string) {
-            this.string = string;
+        ScreenActionType(Component component) {
+            this.component = component;
         }
 
-        public String getString() {
-            return string;
+        public Component getComponent() {
+            return component;
         }
     }
 }
