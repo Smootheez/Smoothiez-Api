@@ -1,5 +1,6 @@
 package dev.smootheez.smoothiezapi.api;
 
+import com.terraformersmc.modmenu.api.*;
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.util.*;
 
@@ -24,6 +25,8 @@ public interface ConfigApi {
                 .forEach(method -> invokeConfigOption(method, options));
         ConfigWriter writer = new ConfigWriter(getConfigId());
         options.forEach(option -> writer.addOption(option.getKey(), option));
+        if (configClass.getAnnotation(Config.class).autoGui())
+            ModMenuUtil.registerConfigScreenFactory(getConfigId(), options);
         return writer;
     }
 

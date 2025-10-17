@@ -1,5 +1,6 @@
-package dev.smootheez.smoothiezapi.config;
+package dev.smootheez.smoothiezapi;
 
+import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.example.*;
 import org.junit.jupiter.api.*;
 

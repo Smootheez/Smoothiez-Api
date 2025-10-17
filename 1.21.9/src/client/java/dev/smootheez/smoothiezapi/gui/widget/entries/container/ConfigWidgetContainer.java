@@ -1,35 +1,50 @@
 package dev.smootheez.smoothiezapi.gui.widget.entries.container;
 
 import dev.smootheez.smoothiezapi.config.*;
-import dev.smootheez.smoothiezapi.example.*;
 import dev.smootheez.smoothiezapi.gui.widget.base.*;
-import dev.smootheez.smoothiezapi.gui.widget.entries.*;
+import dev.smootheez.smoothiezapi.gui.widget.entries.handler.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.layouts.*;
+import net.minecraft.client.resources.language.*;
 import net.minecraft.network.chat.*;
+import net.minecraft.util.*;
+
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWidgetEntry> {
-    public ConfigWidgetContainer(Minecraft minecraft, HeaderAndFooterLayout layout) {
+    private final int layoutWidth;
+    private final String configId;
+
+    public ConfigWidgetContainer(Minecraft minecraft, HeaderAndFooterLayout layout, String configId, List<ConfigOption<?>> options) {
         super(minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
-        ExampleConfig config = ConfigManager.getConfig(ExampleConfig.class);
-        this.addEntry(new BooleanWidgetEntry(Component.literal("Boolean example"), null, config.getBooleanExample()));
-        this.addEntry(new CycleWidgetEntry<>(Component.literal("Cycle example"), null, config.getEnumExample()));
-        this.addEntry(new TextIntegerWidgetEntry(Component.literal("Integer example"), null, config.getIntegerExample()));
-        this.addEntry(new TextDoubleWidgetEntry(Component.literal("Double example"), null, config.getDoubleExample()));
-        this.addEntry(new TextStringWidgetEntry(Component.literal("String example"), null, config.getStringExample()));
-        this.addEntry(new OptionListWidgetEntry(Component.literal("Option List example"), null, config.getOptionListExample()));
+        this.layoutWidth = layout.getWidth();
+        this.configId = configId;
+
+        options.forEach(option -> this.addEntry(createWidget(option)));
 
         this.setScrollAmount(this.scrollAmount());
     }
 
+    public <T> ConfigWidgetEntry createWidget(ConfigOption<T> option) {
+        return option.getWidgetHandler().createWidget(option, configId, createTooltip(option));
+    }
+
+    private List<FormattedCharSequence> createTooltip(ConfigOption<?> option) {
+        String tooltipKey = WidgetHandler.CONFIG_WIDGET + configId + "." + option.getKey() + ".description";
+        Component translatable = Component.translatable(tooltipKey);
+        if (I18n.exists(tooltipKey)) {
+            return this.minecraft.font.split(translatable, layoutWidth / 2);
+        }
+        return Collections.emptyList();
+    }
+
     @Override
     public int getRowWidth() {
-        if (this.scrollbarVisible()) return this.getWidth() - 20;
-        return this.getWidth() - 12;
+        return this.scrollbarVisible() ? this.getWidth() - 20 : this.getWidth() - 12;
     }
 
     @Override
