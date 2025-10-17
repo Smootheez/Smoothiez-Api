@@ -1,10 +1,12 @@
 package dev.smootheez.smoothiezapi.keymapping;
 
+import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.resources.*;
 
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 public interface KeyMapCategoryHelper {
     /**
      * Registers a new key mapping category.

@@ -2,10 +2,12 @@ package dev.smootheez.smoothiezapi.keymapping;
 
 import com.google.common.collect.*;
 import it.unimi.dsi.fastutil.objects.*;
+import net.fabricmc.api.*;
 import net.minecraft.client.*;
 
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 public final class KeyMappingRegistryImpl {
     private static final List<KeyMapping> CUSTOM_KEY_MAPPINGS = new ReferenceArrayList<>();
 

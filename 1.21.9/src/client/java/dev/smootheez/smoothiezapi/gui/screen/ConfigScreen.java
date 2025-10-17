@@ -1,7 +1,6 @@
 package dev.smootheez.smoothiezapi.gui.screen;
 
-import dev.smootheez.smoothiezapi.config.*;
-import dev.smootheez.smoothiezapi.example.*;
+import dev.smootheez.smoothiezapi.api.*;
 import dev.smootheez.smoothiezapi.gui.widget.entries.container.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.gui.components.*;
@@ -9,21 +8,19 @@ import net.minecraft.client.gui.layouts.*;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.*;
 
-import java.util.*;
-
 @Environment(EnvType.CLIENT)
 public class ConfigScreen extends Screen {
     private final Screen parent;
     private final String configId;
-    private final List<ConfigOption<?>> options;
+    private final ConfigApi configApi;
     private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
     private ConfigWidgetContainer configWidgetContainer;
 
-    public ConfigScreen(Screen parent, String configId, List<ConfigOption<?>> options) {
-        super(Component.translatable("config.screen." + configId + ".title"));
+    public ConfigScreen(Screen parent, ConfigApi configApi) {
+        super(Component.translatable("config.screen." + configApi.getConfigId() + ".title"));
         this.parent = parent;
-        this.configId = configId;
-        this.options = options;
+        this.configId = configApi.getConfigId();
+        this.configApi = configApi;
     }
 
     @Override
@@ -39,7 +36,7 @@ public class ConfigScreen extends Screen {
                 this.minecraft,
                 this.layout,
                 configId,
-                options
+                configApi.getAllConfigOptions()
         );
         this.addRenderableWidget(configWidgetContainer);
 
@@ -56,6 +53,9 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (minecraft != null) this.minecraft.setScreen(this.parent);
+        if (minecraft != null) {
+            this.minecraft.setScreen(this.parent);
+            this.configApi.saveConfig();
+        }
     }
 }

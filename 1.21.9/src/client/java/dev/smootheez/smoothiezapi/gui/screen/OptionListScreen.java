@@ -59,6 +59,7 @@ public class OptionListScreen extends Screen {
         if (minecraft != null) this.minecraft.setScreen(this.parent);
     }
 
+    @Environment(EnvType.CLIENT)
     private class WidgetContainer extends ContainerObjectSelectionList<WidgetEntry> {
         private final ConfigOption<OptionList> option;
 
@@ -99,6 +100,7 @@ public class OptionListScreen extends Screen {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private class WidgetEntry extends ContainerObjectSelectionList.Entry<WidgetEntry> {
         private final StringWidget labelWidget;
         protected final List<AbstractWidget> children = Lists.newArrayList();
@@ -184,6 +186,7 @@ public class OptionListScreen extends Screen {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private class EditOrAddValueScreen extends Screen {
         private final Screen parent;
         private final String label;
@@ -245,6 +248,7 @@ public class OptionListScreen extends Screen {
     }
 
     // TODO: For now use literal string, change it to translatable later
+    @Environment(EnvType.CLIENT)
     private enum ScreenActionType {
         EDIT("Edit Value"),
         ADD("Add Value");
