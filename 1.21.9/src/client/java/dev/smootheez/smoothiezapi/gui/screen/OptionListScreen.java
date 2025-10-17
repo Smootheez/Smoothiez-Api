@@ -104,18 +104,17 @@ public class OptionListScreen extends Screen {
         private static final int H_PADDING = 1;
         private static final int V_CENTER_OFFSET = 0; // tweak if vertically misaligned
         private static final int SPACING = 3;
+        private final String label;
 
         public WidgetEntry(String label) {
-            this.labelWidget = new StringWidget(Component.literal(label), OptionListScreen.this.font);
+            this.label = label;
+            this.labelWidget = new StringWidget(Component.literal(this.label), OptionListScreen.this.font);
 
             addChild(this.labelWidget);
             addRightAlignedWidget(Button.builder(Component.literal("❌"),
-                    button -> {
-                        OptionListScreen.this.widgetContainer.removeValue(label);
-                    }).size(20, 20).build());
+                    button -> OptionListScreen.this.widgetContainer.removeValue(label)).size(20, 20).build());
             addRightAlignedWidget(Button.builder(Component.literal("Edit"),
-                    button -> {
-                    }).size(80, 20).build());
+                    this::onPress).size(80, 20).build());
         }
 
         protected void addChild(AbstractWidget widget) {
@@ -174,6 +173,56 @@ public class OptionListScreen extends Screen {
         @Override
         public @NotNull List<? extends GuiEventListener> children() {
             return this.children;
+        }
+
+        private void onPress(Button button) {
+            if (OptionListScreen.this.minecraft != null)
+                OptionListScreen.this.minecraft.setScreen(new EditOrAddValueScreen(OptionListScreen.this, ScreenActionType.EDIT, this.label));
+        }
+    }
+
+    private static class EditOrAddValueScreen extends Screen {
+        private final Screen parent;
+        private final String label;
+
+        protected EditOrAddValueScreen(Screen parent, ScreenActionType type, String label) {
+            super(Component.literal(type.getString()));
+            this.parent = parent;
+            this.label = label;
+        }
+
+        @Override
+        protected void init() {
+            Button doneButton = Button.builder(CommonComponents.GUI_DONE,
+                    btn -> onClose()).build();
+            doneButton.setPosition(this.width / 2 - doneButton.getWidth() / 2, this.height / 2 - 12);
+            this.addRenderableWidget(doneButton);
+
+            Button cancelButton = Button.builder(CommonComponents.GUI_CANCEL,
+                    btn -> onClose()).build();
+            cancelButton.setPosition(this.width / 2 - cancelButton.getWidth() / 2, this.height / 2 + 12);
+            this.addRenderableWidget(cancelButton);
+        }
+
+        @Override
+        public void onClose() {
+            if (minecraft != null) this.minecraft.setScreen(this.parent);
+        }
+    }
+
+    // TODO: For now use literal string, change it to translatable later
+    private enum ScreenActionType {
+        EDIT("Edit Value"),
+        ADD("Add Value");
+
+        private final String string;
+
+        ScreenActionType(String string) {
+            this.string = string;
+        }
+
+        public String getString() {
+            return string;
         }
     }
 }

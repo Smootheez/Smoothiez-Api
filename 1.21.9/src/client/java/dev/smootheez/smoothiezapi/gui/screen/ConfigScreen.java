@@ -40,9 +40,8 @@ public class ConfigScreen extends Screen {
     @Override
     protected void repositionElements() {
         this.layout.arrangeElements();
-        if (configWidgetContainer != null) {
+        if (configWidgetContainer != null)
             this.configWidgetContainer.updateSizeAndPosition(this.layout.getWidth(), this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
-        }
     }
 
     @Override

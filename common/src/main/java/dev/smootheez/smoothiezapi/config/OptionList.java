@@ -11,6 +11,13 @@ public record OptionList(List<String> values) {
         this.values.add(value);
     }
 
+    public void edit(String oldValue, String newValue) {
+        int index = this.values.indexOf(oldValue);
+        if (index != -1) {
+            this.values.set(index, newValue);
+        }
+    }
+
     public void remove(String value) {
         this.values.remove(value);
     }
