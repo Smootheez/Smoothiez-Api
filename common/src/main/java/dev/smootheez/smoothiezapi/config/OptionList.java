@@ -13,9 +13,7 @@ public record OptionList(List<String> values) {
 
     public void edit(String oldValue, String newValue) {
         int index = this.values.indexOf(oldValue);
-        if (index != -1) {
-            this.values.set(index, newValue);
-        }
+        if (index != -1) this.values.set(index, newValue);
     }
 
     public void remove(String value) {

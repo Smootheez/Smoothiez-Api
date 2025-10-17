@@ -36,7 +36,10 @@ public class OptionListScreen extends Screen {
         footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE,
                 btn -> onClose()).build());
         footerLayout.addChild(Button.builder(Component.literal("Add Value"),
-                btn -> onClose()).build());
+                btn -> {
+                    if (this.minecraft != null)
+                        this.minecraft.setScreen(new EditOrAddValueScreen(OptionListScreen.this, ScreenActionType.ADD, ""));
+                }).build());
 
         this.widgetContainer = this.addRenderableWidget(new WidgetContainer());
 
@@ -181,20 +184,30 @@ public class OptionListScreen extends Screen {
         }
     }
 
-    private static class EditOrAddValueScreen extends Screen {
+    private class EditOrAddValueScreen extends Screen {
         private final Screen parent;
         private final String label;
+        private OptionList optionList;
+        private final ScreenActionType type;
+        private EditBox editBox;
 
         protected EditOrAddValueScreen(Screen parent, ScreenActionType type, String label) {
             super(Component.literal(type.getString()));
             this.parent = parent;
             this.label = label;
+            this.type = type;
         }
 
         @Override
         protected void init() {
+            optionList = widgetEntry.getOption().getValue();
+
+            editBox = new EditBox(this.font, this.width / 2 - 75, this.height / 2 - 50, 150, 20, Component.literal(""));
+            editBox.setValue(this.label);
+            this.addRenderableWidget(editBox);
+
             Button doneButton = Button.builder(CommonComponents.GUI_DONE,
-                    btn -> onClose()).build();
+                    btn -> updateOptionValue()).build();
             doneButton.setPosition(this.width / 2 - doneButton.getWidth() / 2, this.height / 2 - 12);
             this.addRenderableWidget(doneButton);
 
@@ -204,9 +217,30 @@ public class OptionListScreen extends Screen {
             this.addRenderableWidget(cancelButton);
         }
 
+        private void updateOptionValue() {
+            String newValue = this.editBox.getValue().trim();
+            if (newValue.isEmpty() || newValue.equals(this.label)) {
+                onClose();
+                return;
+            }
+
+            switch (type) {
+                case EDIT -> optionList.edit(this.label, newValue);
+                case ADD -> optionList.add(newValue);
+                default -> throw new IllegalStateException("Unexpected value: " + type);
+            }
+
+            widgetEntry.setOptionValue(optionList);
+            widgetContainer.refreshEntries();
+            onClose();
+        }
+
         @Override
         public void onClose() {
-            if (minecraft != null) this.minecraft.setScreen(this.parent);
+            if (minecraft != null) {
+                this.minecraft.setScreen(this.parent);
+                widgetContainer.refreshEntries();
+            }
         }
     }
 
