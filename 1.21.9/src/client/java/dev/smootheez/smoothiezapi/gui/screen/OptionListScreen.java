@@ -48,7 +48,7 @@ public class OptionListScreen extends Screen {
         // Footer buttons
         LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(4));
         footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE, btn -> onClose()).build());
-        footerLayout.addChild(Button.builder(Component.literal("Add Value"),
+        footerLayout.addChild(Button.builder(Component.translatable("widget." + Constants.MOD_ID + ".add.option_list"),
                 btn -> {
                     if (this.minecraft != null) {
                         this.minecraft.setScreen(new EditOrAddValueScreen(this, ScreenActionType.ADD, ""));
@@ -147,7 +147,7 @@ public class OptionListScreen extends Screen {
                             button -> OptionListScreen.this.widgetContainer.removeValue(label))
                     .size(20, 20)
                     .build());
-            addRightAlignedWidget(Button.builder(Component.literal("Edit"), this::onPress)
+            addRightAlignedWidget(Button.builder(Component.translatable("widget." + Constants.MOD_ID + ".edit.option_list"), this::onPress)
                     .size(80, 20)
                     .build());
         }

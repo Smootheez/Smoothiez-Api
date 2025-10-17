@@ -3,6 +3,7 @@ package dev.smootheez.smoothiezapi.gui.widget.entries;
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.gui.screen.*;
 import dev.smootheez.smoothiezapi.gui.widget.base.*;
+import dev.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.components.*;
@@ -17,7 +18,7 @@ public class OptionListWidgetEntry extends LabeledWidgetEntry<OptionList> {
     public OptionListWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<OptionList> option) {
         super(label, description, option);
 
-        addRightAlignedWidget(Button.builder(Component.literal("Edit List"),
+        addRightAlignedWidget(Button.builder(Component.translatable("widget." + Constants.MOD_ID + ".configure.option_list"),
                 btn -> this.openOptionListScreen()).size(80, 20).build());
     }
 
