@@ -4,7 +4,6 @@ import com.google.common.collect.*;
 import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.gui.widget.entries.*;
 import net.fabricmc.api.*;
-import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.*;
@@ -21,7 +20,7 @@ public class OptionListScreen extends Screen {
     private final Screen parent;
     private final OptionListWidgetEntry widgetEntry;
     private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 30, 30);
-    private WidgetContaineer widgetContaineer;
+    private WidgetContainer widgetContainer;
 
     public OptionListScreen(Screen parent, OptionListWidgetEntry widgetEntry) {
         super(Component.literal("Edit Option List"));
@@ -39,12 +38,7 @@ public class OptionListScreen extends Screen {
         footerLayout.addChild(Button.builder(Component.literal("Add Value"),
                 btn -> onClose()).build());
 
-        this.widgetContaineer = new WidgetContaineer(
-                this.minecraft,
-                this.layout,
-                this.widgetEntry
-        );
-        this.addRenderableWidget(widgetContaineer);
+        this.widgetContainer = this.addRenderableWidget(new WidgetContainer());
 
         this.layout.visitWidgets(this::addRenderableWidget);
         repositionElements();
@@ -53,8 +47,8 @@ public class OptionListScreen extends Screen {
     @Override
     protected void repositionElements() {
         this.layout.arrangeElements();
-        if (this.widgetContaineer != null)
-            this.widgetContaineer.updateSizeAndPosition(this.layout.getWidth(), this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
+        if (this.widgetContainer != null)
+            this.widgetContainer.updateSizeAndPosition(this.layout.getWidth(), this.layout.getContentHeight(), 0, this.layout.getHeaderHeight());
     }
 
     @Override
@@ -62,22 +56,33 @@ public class OptionListScreen extends Screen {
         if (minecraft != null) this.minecraft.setScreen(this.parent);
     }
 
-    private class WidgetContaineer extends ContainerObjectSelectionList<WidgetEntry> {
-        public WidgetContaineer(Minecraft minecraft, HeaderAndFooterLayout layout, OptionListWidgetEntry widgetEntry) {
-            super(minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
+    private class WidgetContainer extends ContainerObjectSelectionList<WidgetEntry> {
+        private final ConfigOption<OptionList> option;
 
-            ConfigOption<OptionList> option = widgetEntry.getOption();
-            option.getValue().values().forEach(
-                    value -> this.addEntry(new WidgetEntry(value, option))
-            );
+        public WidgetContainer() {
+            super(OptionListScreen.this.minecraft, layout.getWidth(), layout.getContentHeight(), layout.getHeaderHeight(), 24);
+            this.option = widgetEntry.getOption();
+
+            refreshEntries();
 
             this.setScrollAmount(this.scrollAmount());
         }
 
+        public void removeValue(String value) {
+            OptionList optionList = option.getValue();
+            optionList.remove(value);
+            widgetEntry.setOptionValue(optionList);
+            refreshEntries();
+        }
+
+        private void refreshEntries() {
+            this.clearEntries();
+            option.getValue().values().forEach(value -> this.addEntry(new WidgetEntry(value)));
+        }
+
         @Override
         public int getRowWidth() {
-            if (this.scrollbarVisible()) return this.getWidth() - 20;
-            return this.getWidth() - 12;
+            return this.scrollbarVisible() ? this.getWidth() - 20 : this.getWidth() - 12;
         }
 
         @Override
@@ -95,26 +100,22 @@ public class OptionListScreen extends Screen {
         private final StringWidget labelWidget;
         protected final List<AbstractWidget> children = Lists.newArrayList();
         protected final List<AbstractWidget> rightAlignedWidget = new ArrayList<>();
-        private final Button removeButton;
-        private final Button editButton;
-        private final ConfigOption<OptionList> optionList;
 
         private static final int H_PADDING = 1;
         private static final int V_CENTER_OFFSET = 0; // tweak if vertically misaligned
         private static final int SPACING = 3;
 
-        public WidgetEntry(String label, ConfigOption<OptionList> optionList) {
-            this.optionList = optionList;
-
+        public WidgetEntry(String label) {
             this.labelWidget = new StringWidget(Component.literal(label), OptionListScreen.this.font);
-            this.removeButton = Button.builder(Component.literal("❌"),
-                    button -> {}).size(20, 20).build();
-            this.editButton = Button.builder(Component.literal("Edit"),
-                    button -> {}).size(80, 20).build();
 
             addChild(this.labelWidget);
-            addRightAlignedWidget(this.removeButton);
-            addRightAlignedWidget(this.editButton);
+            addRightAlignedWidget(Button.builder(Component.literal("❌"),
+                    button -> {
+                        OptionListScreen.this.widgetContainer.removeValue(label);
+                    }).size(20, 20).build());
+            addRightAlignedWidget(Button.builder(Component.literal("Edit"),
+                    button -> {
+                    }).size(80, 20).build());
         }
 
         protected void addChild(AbstractWidget widget) {

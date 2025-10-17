@@ -19,10 +19,7 @@ public class BooleanWidgetEntry extends LabeledWidgetEntry<Boolean> {
         this.toggleButton = CycleButton.onOffBuilder(this.option.getValue())
                 .displayOnlyValue()
                 .create(0, 0, 80, 20, Component.literal(""),
-                        (cycleButton, value) -> {
-                            setOptionValue(value);
-                            updateResetButtonState();
-                        });
+                        (cycleButton, value) -> setOptionValue(value));
 
         addRightAlignedWidget(this.toggleButton);
     }

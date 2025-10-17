@@ -23,10 +23,7 @@ public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
                 .withValues(enumValues)
                 .withInitialValue(this.option.getValue())
                 .create(0, 0, 80, 20, Component.literal(""),
-                        (cycleButton1, value) -> {
-                            setOptionValue(value);
-                            updateResetButtonState();
-                        });
+                        (cycleButton1, value) -> setOptionValue(value));
 
         addRightAlignedWidget(cycleButton);
     }

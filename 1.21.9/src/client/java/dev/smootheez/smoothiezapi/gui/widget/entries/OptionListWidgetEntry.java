@@ -14,14 +14,11 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class OptionListWidgetEntry extends LabeledWidgetEntry<OptionList> {
-    private final Button button;
-
     public OptionListWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<OptionList> option) {
         super(label, description, option);
-        this.button = Button.builder(Component.literal("Edit List"),
-                btn -> this.openOptionListScreen()).size(80, 20).build();
 
-        addRightAlignedWidget(this.button);
+        addRightAlignedWidget(Button.builder(Component.literal("Edit List"),
+                btn -> this.openOptionListScreen()).size(80, 20).build());
     }
 
     public ConfigOption<OptionList> getOption() {

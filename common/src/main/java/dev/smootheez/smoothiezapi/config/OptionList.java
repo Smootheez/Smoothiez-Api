@@ -7,6 +7,18 @@ public record OptionList(List<String> values) {
         this.values = new ArrayList<>(values);
     }
 
+    public void add(String value) {
+        this.values.add(value);
+    }
+
+    public void remove(String value) {
+        this.values.remove(value);
+    }
+
+    public void clear() {
+        this.values.clear();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

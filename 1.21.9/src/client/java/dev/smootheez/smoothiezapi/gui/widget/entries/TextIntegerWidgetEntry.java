@@ -23,7 +23,6 @@ public class TextIntegerWidgetEntry extends TextWidgetEntry<Integer> {
         } else {
             this.textField.setTextColor(-65536);
         }
-        super.textFieldResponder(s);
     }
 
     private boolean validateInteger(String string) {

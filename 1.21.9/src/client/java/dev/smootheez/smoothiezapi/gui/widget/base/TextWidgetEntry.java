@@ -28,7 +28,5 @@ public abstract class TextWidgetEntry<T> extends LabeledWidgetEntry<T>  {
         this.textField.setValue(this.option.getDefaultValue().toString());
     }
 
-    protected void textFieldResponder(String s) {
-        updateResetButtonState();
-    }
+    protected abstract void textFieldResponder(String s);
 }

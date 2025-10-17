@@ -23,7 +23,6 @@ public class TextDoubleWidgetEntry extends TextWidgetEntry<Double> {
         } else {
             this.textField.setTextColor(-65536);
         }
-        super.textFieldResponder(s);
     }
 
     private boolean validateDouble(String string) {

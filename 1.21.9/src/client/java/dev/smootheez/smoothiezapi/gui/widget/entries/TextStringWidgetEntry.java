@@ -19,6 +19,5 @@ public class TextStringWidgetEntry extends TextWidgetEntry<String> {
     protected void textFieldResponder(String s) {
         setOptionValue(s);
         this.textField.setTextColor(-2039584);
-        super.textFieldResponder(s);
     }
 }
