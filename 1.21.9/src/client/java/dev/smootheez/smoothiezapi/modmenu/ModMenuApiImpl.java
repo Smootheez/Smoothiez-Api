@@ -84,6 +84,7 @@ public class ModMenuApiImpl implements ModMenuApi {
      */
     public static void registerConfigScreen(String modId, ConfigScreenFactory<?> factory) {
         SCREEN_FACTORY.putIfAbsent(modId, factory);
+        Constants.LOGGER.info("Registered config screen for mod: {}", modId);
     }
 
     /**
