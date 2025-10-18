@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+    // for first time load the project, run './gradlew :1.21.9:build' and then load the root script again
     modImplementation(project(":1.21.9"))
     implementation(project(":common"))
 

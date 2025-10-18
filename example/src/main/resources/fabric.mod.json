@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "example",
+  "id": "${modid}",
   "version": "${modVersion}",
   "name": "${modName}",
   "description": "${modDescription}",
@@ -17,6 +17,9 @@
   "entrypoints": {
     "client": [
       "dev.smootheez.example.ExampleClient"
+    ],
+    "main": [
+      "dev.smootheez.example.Example"
     ],
     "smoothiezapi": [
       "dev.smootheez.example.config.ExampleConfig"
