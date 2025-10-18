@@ -3,7 +3,6 @@ package dev.smootheez.smoothiezapi.modmenu;
 import com.terraformersmc.modmenu.api.*;
 import dev.smootheez.smoothiezapi.api.*;
 import dev.smootheez.smoothiezapi.config.*;
-import dev.smootheez.smoothiezapi.example.*;
 import dev.smootheez.smoothiezapi.gui.screen.*;
 import dev.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
@@ -85,20 +84,6 @@ public class ModMenuApiImpl implements ModMenuApi {
      */
     public static void registerConfigScreen(String modId, ConfigScreenFactory<?> factory) {
         SCREEN_FACTORY.putIfAbsent(modId, factory);
-    }
-
-    /**
-     * Provides a default config screen factory for ModMenu.
-     * <p>
-     * This default implementation returns the configuration screen
-     * for {@link ExampleConfig}, and can be customized or extended
-     * as needed.
-     *
-     * @return a factory that builds a config screen for {@link ExampleConfig}
-     */
-    @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return screen -> ConfigManager.getConfig(ExampleConfig.class).getScreen(screen);
     }
 
     /**

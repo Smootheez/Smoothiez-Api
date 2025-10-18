@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${modid}",
+  "id": "example",
   "version": "${modVersion}",
   "name": "${modName}",
   "description": "${modDescription}",
@@ -13,26 +13,15 @@
     "issues": "https://github.com/Smootheez/Smoothiez-Api/issues"
   },
   "license": "GNU General Public License v3.0",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": [
-      "dev.smootheez.smoothiezapi.SmoothiezApi"
-    ],
     "client": [
-      "dev.smootheez.smoothiezapi.SmoothiezApiClient"
+      "dev.smootheez.example.ExampleClient"
     ],
-    "modmenu": [
-      "dev.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
+    "smoothiezapi": [
+      "dev.smootheez.example.config.ExampleConfig"
     ]
   },
-  "accessWidener": "smoothiezapi.accesswidener",
-  "mixins": [
-    "smoothiezapi.mixins.json",
-    {
-      "config": "smoothiezapi.client.mixins.json",
-      "environment": "client"
-    }
-  ],
   "depends": {
     "fabricloader": ">=${loaderVersion}",
     "minecraft": ">=${minecraftVersion}"

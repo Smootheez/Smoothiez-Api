@@ -1,9 +1,10 @@
-package dev.smootheez.smoothiezapi.example;
+package dev.smootheez.example.config;
 
+import dev.smootheez.example.util.*;
 import dev.smootheez.smoothiezapi.api.*;
 import dev.smootheez.smoothiezapi.config.*;
 
-@Config(name = "example")
+@Config(name = Constants.MOD_ID, autoGui = true)
 public class ExampleConfig implements ConfigApi {
     private final ConfigOption<Boolean> booleanExample = ConfigOption.create("exampleBoolean", true);
     private final ConfigOption<Integer> integerExample = ConfigOption.create("exampleInteger", 10, 0, 20);

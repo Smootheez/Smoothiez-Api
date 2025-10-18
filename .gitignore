@@ -41,6 +41,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-/1.21.9/run/
+/**/run/
 /.idea/
-/1.21.9/logs/
+/**/logs/
