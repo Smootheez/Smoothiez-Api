@@ -13,13 +13,6 @@ val modmenuVersion: String by project
 version = modVersion
 
 loom {
-    splitEnvironmentSourceSets()
-    mods {
-        create(modid) {
-            sourceSet(sourceSets.main.get())
-            sourceSet(sourceSets.named("client").get())
-        }
-    }
     accessWidenerPath.set(file("src/main/resources/${modid}.accesswidener"))
 }
 

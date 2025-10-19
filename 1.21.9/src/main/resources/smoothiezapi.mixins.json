@@ -8,5 +8,8 @@
   "overwrites": {
     "requireAnnotations": true
   },
-  "mixins": []
+  "mixins": [],
+  "client": [
+    "client.OptionsMixin"
+  ]
 }

@@ -18,20 +18,13 @@
     "main": [
       "dev.smootheez.smoothiezapi.SmoothiezApi"
     ],
-    "client": [
-      "dev.smootheez.smoothiezapi.SmoothiezApiClient"
-    ],
     "modmenu": [
       "dev.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
     ]
   },
   "accessWidener": "smoothiezapi.accesswidener",
   "mixins": [
-    "smoothiezapi.mixins.json",
-    {
-      "config": "smoothiezapi.client.mixins.json",
-      "environment": "client"
-    }
+    "smoothiezapi.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loaderVersion}",

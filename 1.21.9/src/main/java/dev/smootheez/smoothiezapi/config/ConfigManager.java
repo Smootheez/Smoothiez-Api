@@ -25,7 +25,7 @@ import java.util.*;
  * }
  * }</pre>
  * <p>
- * When the client initializes, {@link SmoothiezApiClient} automatically locates all
+ * When the client initializes, {@link SmoothiezApi} automatically locates all
  * entrypoints of type {@code "smoothiezapi"} that implement {@link ConfigApi},
  * instantiates them, and registers them through this manager.
  *
@@ -44,14 +44,14 @@ import java.util.*;
  * }</pre>
  * <p>
  * Once declared in {@code fabric.mod.json} under {@code "smoothiezapi"},
- * the {@link SmoothiezApiClient} will automatically call:
+ * the {@link SmoothiezApi} will automatically call:
  * <pre>{@code
  * ConfigManager.register(new ExampleConfig());
  * }</pre>
  *
  * <h3>Lifecycle Overview</h3>
  * <ul>
- *     <li>Called during {@link SmoothiezApiClient#onInitializeClient()}.</li>
+ *     <li>Called during {@link SmoothiezApi#onInitialize()}.</li>
  *     <li>Loads existing config data from disk (via {@link ConfigApi#loadConfig()}).</li>
  *     <li>Saves to ensure configuration file consistency (via {@link ConfigApi#saveConfig()}).</li>
  *     <li>If {@link Config#autoGui()} is enabled and ModMenu is present, a config screen is registered.</li>
@@ -67,7 +67,7 @@ import java.util.*;
  * @author Smootheez
  * @see Config
  * @see ConfigApi
- * @see SmoothiezApiClient
+ * @see SmoothiezApi
  * @see ConfigWriter
  * @see ModChecker
  * @see ModMenuApiImpl
@@ -90,7 +90,7 @@ public final class ConfigManager {
     /**
      * Registers a configuration instance and initializes its lifecycle.
      * <p>
-     * This method is typically invoked automatically by {@link SmoothiezApiClient}
+     * This method is typically invoked automatically by {@link SmoothiezApi}
      * during client initialization, when it processes all Fabric entrypoints
      * of type {@code "smoothiezapi"}.
      * <p>
