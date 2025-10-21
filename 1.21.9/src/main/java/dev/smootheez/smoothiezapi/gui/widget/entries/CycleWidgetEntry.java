@@ -18,7 +18,8 @@ public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
         super(label, description, option);
         T[] enumValues = this.option.getType().getEnumConstants();
 
-        this.cycleButton = CycleButton.<T>builder(e -> Component.translatable(label.getString() + "." + toCammelCase(e.name())))
+        this.cycleButton = CycleButton.<T>builder(e ->
+                        Component.translatable(label.getString() + "." + e.name().toLowerCase(Locale.ROOT)))
                 .displayOnlyValue()
                 .withValues(enumValues)
                 .withInitialValue(this.option.getValue())
@@ -31,22 +32,5 @@ public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
     @Override
     protected void updateWidgetState() {
         cycleButton.setValue(this.option.getValue());
-    }
-
-    private String toCammelCase(String name) {
-        StringBuilder result = new StringBuilder();
-        String[] parts = name.toLowerCase().split("_");
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.isEmpty())
-                continue;
-            if (i == 0) {
-                result.append(part);
-            } else {
-                result.append(part.substring(0, 1).toUpperCase());
-                result.append(part.substring(1));
-            }
-        }
-        return result.toString();
     }
 }

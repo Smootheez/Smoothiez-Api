@@ -2,6 +2,7 @@ package dev.smootheez.smoothiezapi.gui.widget.entries.container;
 
 import dev.smootheez.smoothiezapi.api.*;
 import dev.smootheez.smoothiezapi.config.*;
+import dev.smootheez.smoothiezapi.gui.helper.*;
 import dev.smootheez.smoothiezapi.gui.widget.base.*;
 import dev.smootheez.smoothiezapi.gui.widget.entries.handler.*;
 import net.fabricmc.api.*;
@@ -14,6 +15,8 @@ import net.minecraft.network.chat.*;
 import net.minecraft.util.*;
 
 import java.util.*;
+
+import static dev.smootheez.smoothiezapi.gui.helper.ConfigTranslationHelper.*;
 
 @Environment(EnvType.CLIENT)
 public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWidgetEntry> {
@@ -54,7 +57,7 @@ public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWi
         if (search.isEmpty()) return true;
 
         String query = search.toLowerCase(Locale.ROOT);
-        String translationKey = WidgetHandler.CONFIG_WIDGET + configId + "." + option.getKey();
+        String translationKey = getTranslationKey(configId, option.getKey());
 
         // Prefer localized text if it exists
         String displayText = I18n.exists(translationKey)
@@ -71,11 +74,9 @@ public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWi
     }
 
     private List<FormattedCharSequence> createTooltip(ConfigOption<?> option) {
-        String tooltipKey = WidgetHandler.CONFIG_WIDGET + configId + "." + option.getKey() + ".description";
+        String tooltipKey = getDescriptionTranslationKey(configId, option.getKey());
 
-        if (!I18n.exists(tooltipKey)) {
-            return Collections.emptyList();
-        }
+        if (!I18n.exists(tooltipKey)) return Collections.emptyList();
 
         Component tooltipComponent = Component.translatable(tooltipKey);
         return this.minecraft.font.split(tooltipComponent, layoutWidth / 2);

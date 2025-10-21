@@ -1,5 +1,6 @@
-package dev.smootheez.smoothiezapi.config;
+package dev.smootheez.smoothiezapi.config.option;
 
+import dev.smootheez.smoothiezapi.config.*;
 import dev.smootheez.smoothiezapi.config.serializer.*;
 import dev.smootheez.smoothiezapi.gui.widget.entries.handler.*;
 import org.jetbrains.annotations.*;
@@ -17,7 +18,7 @@ public class DoubleOption extends ConfigOption<Double> {
 
     @Override
     public @NotNull WidgetHandler<Double> getWidgetHandler() {
-        return new WidgetHandler.DoubleHandler();
+        return new WidgetHandler.TextDoubleHandler();
     }
 
     @Override
