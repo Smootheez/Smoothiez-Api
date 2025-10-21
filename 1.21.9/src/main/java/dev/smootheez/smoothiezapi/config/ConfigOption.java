@@ -6,7 +6,6 @@ import org.jetbrains.annotations.*;
 public abstract class ConfigOption<T> {
     private final String key;
     private T value;
-    private T oldValue;
     private final T minValue;
     private final T maxValue;
     private final T defaultValue;
@@ -17,7 +16,6 @@ public abstract class ConfigOption<T> {
         this.value = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
-        this.oldValue = defaultValue;
     }
 
     public String getKey() {
@@ -30,14 +28,6 @@ public abstract class ConfigOption<T> {
 
     public void setValue(T value) {
         this.value = value;
-    }
-
-    public void commit() {
-        this.oldValue = this.value;
-    }
-
-    public T getOldValue() {
-        return oldValue;
     }
 
     public T getDefaultValue() {

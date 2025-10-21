@@ -22,10 +22,6 @@
       "dev.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
     ]
   },
-  "accessWidener": "smoothiezapi.accesswidener",
-  "mixins": [
-    "smoothiezapi.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=${loaderVersion}",
     "minecraft": ">=${minecraftVersion}"

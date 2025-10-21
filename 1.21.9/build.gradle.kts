@@ -12,10 +12,6 @@ val modmenuVersion: String by project
 
 version = modVersion
 
-loom {
-    accessWidenerPath.set(file("src/main/resources/${modid}.accesswidener"))
-}
-
 repositories {
     maven {
         name = "Terraformers"
