@@ -18,6 +18,9 @@
     "main": [
       "io.github.smootheez.smoothiezapi.SmoothiezApi"
     ],
+    "smoothiezapi": [
+      "io.github.smootheez.smoothiezapi.config.SmoothiezApiConfig"
+    ],
     "modmenu": [
       "io.github.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
     ]

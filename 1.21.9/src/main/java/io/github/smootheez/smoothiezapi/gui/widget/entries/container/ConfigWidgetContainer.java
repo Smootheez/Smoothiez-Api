@@ -3,6 +3,7 @@ package io.github.smootheez.smoothiezapi.gui.widget.entries.container;
 import io.github.smootheez.smoothiezapi.api.*;
 import io.github.smootheez.smoothiezapi.config.*;
 import io.github.smootheez.smoothiezapi.gui.widget.base.*;
+import io.github.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
@@ -68,6 +69,7 @@ public class ConfigWidgetContainer extends ContainerObjectSelectionList<ConfigWi
     /* ---------------------- Widget Creation ---------------------- */
 
     public <T> ConfigWidgetEntry createWidget(ConfigOption<T> option) {
+        DebugMode.sendLogInfo("Creating widget for option: " + option.getKey() + " with type: " + option.getType().getSimpleName());
         return option.getWidgetHandler().createWidget(option, configId, createTooltip(option));
     }
 

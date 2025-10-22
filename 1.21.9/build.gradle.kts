@@ -1,12 +1,13 @@
 plugins {
     id("java")
     id("fabric-loom")
+    id("maven-publish")
 }
 
 val modVersion: String by project
 val minecraftVersion: String by project
 val loaderVersion: String by project
-val fabricApi: String by project
+val fabricVersion: String by project
 val modmenuVersion: String by project
 
 version = modVersion
@@ -26,7 +27,7 @@ dependencies {
     mappings(loom.officialMojangMappings())
     modApi("net.fabricmc:fabric-loader:${loaderVersion}")
 
-    modApi("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
 
     modCompileOnly("com.terraformersmc:modmenu:${modmenuVersion}")
     modLocalRuntime("com.terraformersmc:modmenu:${modmenuVersion}")
@@ -69,4 +70,16 @@ java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersion.toInt()))
     }
     withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = project.name
+            groupId = group.toString() // group already defined in root gradle
+            version = modVersion
+
+            from(components["java"])
+        }
+    }
 }

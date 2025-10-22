@@ -44,6 +44,7 @@ public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     public void setOptionValue(T value) {
         this.option.setValue(value);
         updateResetButtonState();
+        DebugMode.sendLogInfo("Option " + this.option.getKey() + " changed to: " + value);
     }
 
     protected void addChild(AbstractWidget widget) {
@@ -58,14 +59,16 @@ public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     public boolean isDefaultValue() {
         T currentValue = this.option.getValue();
         T defaultValue = this.option.getDefaultValue();
-        Constants.LOGGER.info("Current value: {}, `Default value: {}", currentValue, defaultValue);
-        return currentValue.equals(defaultValue);
+        boolean isEquals = currentValue.equals(defaultValue);
+        DebugMode.sendLogInfo("Current value: " + currentValue + ", Default value: " + defaultValue + ", Are they equal? " + isEquals);
+        return isEquals;
     }
 
     private void resetButtonAction() {
         this.option.setValue(option.getDefaultValue());
         updateWidgetState();
         updateResetButtonState();
+        DebugMode.sendLogInfo("Resetting option " + this.option.getKey() + " to default value: " + option.getDefaultValue());
     }
 
     private void updateResetButtonState() {

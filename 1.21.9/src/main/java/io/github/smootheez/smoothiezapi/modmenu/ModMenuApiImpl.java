@@ -100,5 +100,10 @@ public class ModMenuApiImpl implements ModMenuApi {
     public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
         return SCREEN_FACTORY;
     }
+
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return parent -> ConfigManager.getConfig(SmoothiezApiConfig.class).getScreen(parent);
+    }
 }
 
