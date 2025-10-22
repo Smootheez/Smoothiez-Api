@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.smootheez.smoothiezapi.SmoothiezApi"
+      "io.github.smootheez.smoothiezapi.SmoothiezApi"
     ],
     "modmenu": [
-      "dev.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
+      "io.github.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
     ]
   },
   "depends": {

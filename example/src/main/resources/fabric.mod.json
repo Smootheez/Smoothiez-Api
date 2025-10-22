@@ -11,13 +11,13 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "dev.smootheez.example.ExampleClient"
+      "io.github.smootheez.example.ExampleClient"
     ],
     "main": [
-      "dev.smootheez.example.Example"
+      "io.github.smootheez.example.Example"
     ],
     "smoothiezapi": [
-      "dev.smootheez.example.config.ExampleConfig"
+      "io.github.smootheez.example.config.ExampleConfig"
     ]
   },
   "depends": {
