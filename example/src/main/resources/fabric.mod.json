@@ -12,7 +12,7 @@
     "sources": "https://github.com/Smootheez/Smoothiez-Api",
     "issues": "https://github.com/Smootheez/Smoothiez-Api/issues"
   },
-  "license": "GNU General Public License v3.0",
+  "license": "${modLicense}",
   "environment": "client",
   "entrypoints": {
     "client": [
