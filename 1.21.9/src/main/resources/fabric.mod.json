@@ -4,6 +4,7 @@
   "version": "${modVersion}",
   "name": "${modName}",
   "description": "${modDescription}",
+  "license": "${modLicense}",
   "authors": [
     "Smootheez"
   ],
@@ -12,7 +13,6 @@
     "sources": "https://github.com/Smootheez/Smoothiez-Api",
     "issues": "https://github.com/Smootheez/Smoothiez-Api/issues"
   },
-  "license": "${modLicense}",
   "environment": "*",
   "entrypoints": {
     "main": [

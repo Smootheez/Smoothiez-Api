@@ -39,11 +39,11 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     mappings(loom.officialMojangMappings())
 
-//    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
-//    modLocalRuntime("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
+    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
+    modLocalRuntime("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
 
-//    modCompileOnly("com.terraformersmc:modmenu:${modmenuVersion}")
-//    modLocalRuntime("com.terraformersmc:modmenu:${modmenuVersion}")
+    modCompileOnly("com.terraformersmc:modmenu:${modmenuVersion}")
+    modLocalRuntime("com.terraformersmc:modmenu:${modmenuVersion}")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
