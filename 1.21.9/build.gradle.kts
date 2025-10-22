@@ -23,8 +23,8 @@ dependencies {
     include(project(":common"))
 
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     mappings(loom.officialMojangMappings())
+    modApi("net.fabricmc:fabric-loader:${loaderVersion}")
 
     modApi("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
 

@@ -36,8 +36,8 @@ dependencies {
     implementation(project(":common"))
 
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     mappings(loom.officialMojangMappings())
+    modApi("net.fabricmc:fabric-loader:${loaderVersion}")
 
     modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
     modLocalRuntime("net.fabricmc.fabric-api:fabric-api:${fabricApi}")

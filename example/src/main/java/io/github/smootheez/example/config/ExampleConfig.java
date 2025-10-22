@@ -1,9 +1,8 @@
 package io.github.smootheez.example.config;
 
-import dev.smootheez.smoothiezapi.api.*;
-import dev.smootheez.smoothiezapi.config.option.*;
 import io.github.smootheez.example.util.*;
 import io.github.smootheez.smoothiezapi.api.*;
+import io.github.smootheez.smoothiezapi.config.option.*;
 
 @Config(name = Constants.MOD_ID, autoGui = true)
 public class ExampleConfig implements ConfigApi {
@@ -37,8 +36,6 @@ public class ExampleConfig implements ConfigApi {
     public BooleanOption getBooleanExample() {
         return booleanExample;
     }
-
-    enum AnotherEnum {}
 
     public enum ExampleEnum {
         OPTION_A,
