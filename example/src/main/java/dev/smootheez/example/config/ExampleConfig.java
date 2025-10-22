@@ -2,7 +2,7 @@ package dev.smootheez.example.config;
 
 import dev.smootheez.example.util.*;
 import dev.smootheez.smoothiezapi.api.*;
-import dev.smootheez.smoothiezapi.config.*;
+import dev.smootheez.smoothiezapi.config.option.*;
 
 @Config(name = Constants.MOD_ID, autoGui = true)
 public class ExampleConfig implements ConfigApi {

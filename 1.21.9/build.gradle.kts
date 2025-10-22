@@ -6,7 +6,6 @@ plugins {
 val modVersion: String by project
 val minecraftVersion: String by project
 val loaderVersion: String by project
-val modid: String by project
 val fabricApi: String by project
 val modmenuVersion: String by project
 
@@ -27,8 +26,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     mappings(loom.officialMojangMappings())
 
-    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
-    modLocalRuntime("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${fabricApi}")
 
     modCompileOnly("com.terraformersmc:modmenu:${modmenuVersion}")
     modLocalRuntime("com.terraformersmc:modmenu:${modmenuVersion}")

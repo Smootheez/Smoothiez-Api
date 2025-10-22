@@ -6,6 +6,8 @@ repositories {
     mavenCentral()
 }
 
+version = "0.1.0"
+
 dependencies {
     implementation("com.google.code.gson:gson:2.13.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
