@@ -72,14 +72,30 @@ java {
     withSourcesJar()
 }
 
+// TODO: update the script to support uploading on maven central
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            artifactId = project.name
+            artifactId = rootProject.name
             groupId = group.toString() // group already defined in root gradle
             version = modVersion
 
             from(components["java"])
         }
     }
+
+    repositories {
+        mavenLocal()
+
+        maven {
+            name = "localBuildRepo"
+            url = uri(layout.buildDirectory.dir("repo"))
+        }
+    }
+}
+
+tasks.register("publishToLocal") {
+    group = "publishing"
+    description = "Publishes all Maven publications to the localBuildRepo."
+    dependsOn("publishMavenJavaPublicationToLocalBuildRepoRepository")
 }
