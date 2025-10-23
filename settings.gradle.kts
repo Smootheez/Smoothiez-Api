@@ -13,6 +13,6 @@ pluginManagement {
 }
 
 rootProject.name = extra["modid"] as String
-include("1.21.9")
 include("common")
+include("1.21.9")
 include("example")
