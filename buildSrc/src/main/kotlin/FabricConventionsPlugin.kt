@@ -1,10 +1,14 @@
+import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.*
+import org.gradle.language.jvm.tasks.ProcessResources
 
 class FabricConventionsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -25,7 +29,7 @@ class FabricConventionsPlugin : Plugin<Project> {
             // Configure dependencies
             dependencies {
                 add("minecraft", "com.mojang:minecraft:${minecraftVersion}")
-                add("mappings", project.extensions.getByType(net.fabricmc.loom.api.LoomGradleExtensionAPI::class.java).officialMojangMappings())
+                add("mappings", project.extensions.getByType(LoomGradleExtensionAPI::class.java).officialMojangMappings())
                 add("modApi", "net.fabricmc:fabric-loader:${loaderVersion}")
 
                 add("testImplementation", platform("org.junit:junit-bom:5.10.0"))
@@ -39,7 +43,7 @@ class FabricConventionsPlugin : Plugin<Project> {
             }
 
             // Configure processResources
-            tasks.named("processResources", org.gradle.language.jvm.tasks.ProcessResources::class.java) {
+            tasks.named("processResources", ProcessResources::class.java) {
                 val safeProps = project.properties
                     .filterValues { it is String || it is Number || it is Boolean }
                 inputs.properties(safeProps)
@@ -53,15 +57,15 @@ class FabricConventionsPlugin : Plugin<Project> {
             tasks.withType<JavaCompile>().configureEach {
                 options.encoding = "UTF-8"
                 val targetVersion = targetJavaVersion.toIntOrNull() ?: 8
-                if (targetVersion >= 10 || org.gradle.api.JavaVersion.current().isJava10Compatible) {
+                if (targetVersion >= 10 || JavaVersion.current().isJava10Compatible) {
                     options.release.set(targetVersion)
                 }
             }
 
             // Configure Java extension
-            extensions.configure<org.gradle.api.plugins.JavaPluginExtension>("java") {
-                val javaVersion = org.gradle.api.JavaVersion.toVersion(targetJavaVersion)
-                if (org.gradle.api.JavaVersion.current() < javaVersion) {
+            extensions.configure<JavaPluginExtension>("java") {
+                val javaVersion = JavaVersion.toVersion(targetJavaVersion)
+                if (JavaVersion.current() < javaVersion) {
                     toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersion.toInt()))
                 }
                 withSourcesJar()
