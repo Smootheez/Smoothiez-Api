@@ -24,7 +24,7 @@ class FabricConventionsPlugin : Plugin<Project> {
             val loaderVersion: String by project
             val targetJavaVersion: String by project
 
-            version = modVersion
+            version = "${modVersion}+${minecraftVersion}"
 
             // Configure dependencies
             dependencies {
@@ -71,6 +71,7 @@ class FabricConventionsPlugin : Plugin<Project> {
                 withSourcesJar()
             }
 
+            // TODO: make this be able to upload it on maven central
             // Configure publishing
             extensions.configure<PublishingExtension>("publishing") {
                 publications {
@@ -78,6 +79,7 @@ class FabricConventionsPlugin : Plugin<Project> {
                         artifactId = rootProject.name
                         groupId = project.group.toString()
                         version = modVersion
+
                         from(components["java"])
                     }
                 }
