@@ -14,12 +14,12 @@ import java.util.*;
 public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
     private final CycleButton<T> cycleButton;
 
-    public CycleWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
+    public CycleWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
         super(label, description, option);
         T[] enumValues = this.option.getType().getEnumConstants();
 
         this.cycleButton = CycleButton.<T>builder(e ->
-                        Component.translatable(label.getString() + "." + e.name().toLowerCase(Locale.ROOT)))
+                        Component.translatable(label + "." + e.name().toLowerCase(Locale.ROOT)))
                 .displayOnlyValue()
                 .withValues(enumValues)
                 .withInitialValue(this.option.getValue())

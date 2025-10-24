@@ -78,7 +78,7 @@ class FabricConventionsPlugin : Plugin<Project> {
                     create<MavenPublication>("mavenJava") {
                         artifactId = rootProject.name
                         groupId = project.group.toString()
-                        version = modVersion
+                        version = "${modVersion}+${minecraftVersion}"
 
                         from(components["java"])
                     }

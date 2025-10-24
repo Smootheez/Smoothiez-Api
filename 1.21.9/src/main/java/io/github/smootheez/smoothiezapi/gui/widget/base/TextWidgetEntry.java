@@ -14,7 +14,7 @@ import java.util.*;
 public abstract class TextWidgetEntry<T> extends LabeledWidgetEntry<T>  {
     protected final EditBox textField;
 
-    protected TextWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
+    protected TextWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
         super(label, description, option);
         this.textField = new EditBox(Minecraft.getInstance().font, 0, 0, 80, 20, Component.literal(""));
         this.textField.setValue(this.option.getValue().toString());

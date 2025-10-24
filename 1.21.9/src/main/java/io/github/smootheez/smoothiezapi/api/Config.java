@@ -1,5 +1,8 @@
 package io.github.smootheez.smoothiezapi.api;
 
+import io.github.smootheez.smoothiezapi.config.*;
+import io.github.smootheez.smoothiezapi.gui.screen.*;
+
 import java.lang.annotation.*;
 
 /**

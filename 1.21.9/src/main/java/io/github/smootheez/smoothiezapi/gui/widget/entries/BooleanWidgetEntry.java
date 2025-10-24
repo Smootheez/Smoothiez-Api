@@ -14,7 +14,7 @@ import java.util.*;
 public class BooleanWidgetEntry extends LabeledWidgetEntry<Boolean> {
     private final CycleButton<Boolean> toggleButton;
 
-    public BooleanWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<Boolean> option) {
+    public BooleanWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<Boolean> option) {
         super(label, description, option);
         this.toggleButton = CycleButton.onOffBuilder(this.option.getValue())
                 .displayOnlyValue()

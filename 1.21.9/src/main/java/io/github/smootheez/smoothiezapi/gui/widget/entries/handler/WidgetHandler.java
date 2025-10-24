@@ -21,8 +21,7 @@ public interface WidgetHandler<T> {
     class BooleanHandler implements WidgetHandler<Boolean> {
         @Override
         public ConfigWidgetEntry createWidget(ConfigOption<Boolean> option, String configId, @Nullable List<FormattedCharSequence> tooltip) {
-            return new BooleanWidgetEntry(Component.translatable(
-                    getTranslationKey(configId, option.getKey())), tooltip, option);
+            return new BooleanWidgetEntry(getTranslationKey(configId, option.getKey()), tooltip, option);
         }
     }
 
@@ -30,8 +29,7 @@ public interface WidgetHandler<T> {
     class TextIntegerHandler implements WidgetHandler<Integer> {
         @Override
         public ConfigWidgetEntry createWidget(ConfigOption<Integer> option, String configId, @Nullable List<FormattedCharSequence> tooltip) {
-            return new TextIntegerWidgetEntry(Component.translatable(
-                    getTranslationKey(configId, option.getKey())), tooltip, option);
+            return new TextIntegerWidgetEntry(getTranslationKey(configId, option.getKey()), tooltip, option);
         }
     }
 
@@ -39,8 +37,7 @@ public interface WidgetHandler<T> {
     class TextDoubleHandler implements WidgetHandler<Double> {
         @Override
         public ConfigWidgetEntry createWidget(ConfigOption<Double> option, String configId, @Nullable List<FormattedCharSequence> tooltip) {
-            return new TextDoubleWidgetEntry(Component.translatable(
-                    getTranslationKey(configId, option.getKey())), tooltip, option);
+            return new TextDoubleWidgetEntry(getTranslationKey(configId, option.getKey()), tooltip, option);
         }
     }
 
@@ -48,8 +45,7 @@ public interface WidgetHandler<T> {
     class StringHandler implements WidgetHandler<String> {
         @Override
         public ConfigWidgetEntry createWidget(ConfigOption<String> option, String configId, @Nullable List<FormattedCharSequence> tooltip) {
-            return new TextStringWidgetEntry(Component.translatable(
-                    getTranslationKey(configId, option.getKey())), tooltip, option);
+            return new TextStringWidgetEntry(getTranslationKey(configId, option.getKey()), tooltip, option);
         }
     }
 
@@ -57,8 +53,7 @@ public interface WidgetHandler<T> {
     class OptionListHandler implements WidgetHandler<OptionList> {
         @Override
         public ConfigWidgetEntry createWidget(ConfigOption<OptionList> option, String configId, @Nullable List<FormattedCharSequence> tooltip) {
-            return new OptionListWidgetEntry(Component.translatable(
-                    getTranslationKey(configId, option.getKey())), tooltip, option);
+            return new OptionListWidgetEntry(getTranslationKey(configId, option.getKey()), tooltip, option);
         }
     }
 
@@ -66,8 +61,7 @@ public interface WidgetHandler<T> {
     class EnumHandler<E extends Enum<E>> implements WidgetHandler<E> {
         @Override
         public ConfigWidgetEntry createWidget(ConfigOption<E> option, String configId, @Nullable List<FormattedCharSequence> tooltip) {
-            return new CycleWidgetEntry<>(Component.translatable(
-                    getTranslationKey(configId, option.getKey())), tooltip, option);
+            return new CycleWidgetEntry<>(getTranslationKey(configId, option.getKey()), tooltip, option);
         }
     }
 }

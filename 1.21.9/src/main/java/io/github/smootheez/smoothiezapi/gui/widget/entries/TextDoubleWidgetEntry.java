@@ -11,7 +11,7 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class TextDoubleWidgetEntry extends TextWidgetEntry<Double> {
-    public TextDoubleWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<Double> option) {
+    public TextDoubleWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<Double> option) {
         super(label, description, option);
     }
 

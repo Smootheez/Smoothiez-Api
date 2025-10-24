@@ -27,11 +27,11 @@ public abstract class LabeledWidgetEntry<T> extends ConfigWidgetEntry {
     private static final int V_CENTER_OFFSET = 0; // tweak if vertically misaligned
     private static final int SPACING = 3;
 
-    protected LabeledWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
+    protected LabeledWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
         super(description);
         this.option = option;
 
-        this.labelWidget = new StringWidget(label, Minecraft.getInstance().font);
+        this.labelWidget = new StringWidget(Component.translatable(label), Minecraft.getInstance().font);
         this.resetButton = Button.builder(Component.literal("⭮"),
                 button -> this.resetButtonAction()).size(20, 20).build();
 

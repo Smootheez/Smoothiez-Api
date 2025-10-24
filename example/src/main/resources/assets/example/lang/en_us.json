@@ -1,3 +1,8 @@
 {
-  "key.category.example.controls": "Controls"
+  "key.category.example.controls": "Controls",
+
+  "config.widget.example.exampleEnum": "Example Enum",
+  "config.widget.example.exampleEnum.option_a": "Option A",
+  "config.widget.example.exampleEnum.option_b": "Option B",
+  "config.widget.example.exampleEnum.option_c": "Option C"
 }

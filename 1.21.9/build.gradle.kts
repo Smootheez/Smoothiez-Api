@@ -13,9 +13,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":common"))
-    include(project(":common"))
-
     modApi("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
 
     modCompileOnly("com.terraformersmc:modmenu:${modmenuVersion}")

@@ -15,7 +15,7 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class OptionListWidgetEntry extends LabeledWidgetEntry<OptionList> {
-    public OptionListWidgetEntry(Component label, @Nullable List<FormattedCharSequence> description, ConfigOption<OptionList> option) {
+    public OptionListWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<OptionList> option) {
         super(label, description, option);
 
         addRightAlignedWidget(Button.builder(Component.translatable("widget." + Constants.MOD_ID + ".configure.option_list"),
