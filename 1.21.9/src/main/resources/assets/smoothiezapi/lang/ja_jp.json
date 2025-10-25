@@ -1,0 +1,9 @@
+{
+  "widget.smoothiezapi.add.option_list": "値を追加",
+  "widget.smoothiezapi.edit.option_list": "値を編集",
+  "widget.smoothiezapi.configure.option_list": "リストを編集",
+  "screen.smoothiezapi.option_list.title": "オプションリストを編集",
+  "config.screen.smoothiezapi.title": "スムージーズ設定",
+  "config.widget.smoothiezapi.debug_mode": "デバッグモード",
+  "config.widget.smoothiezapi.debug_mode.description": "デバッグ目的で詳細なログを有効にします。"
+}
