@@ -58,8 +58,7 @@ While Smoothiez API was originally developed for Smootheez’s personal projects
 
 ## Issue Tracker
 
-Found a bug or have a feature request?  
-Please report it here: [**GitHub Issues**](https://github.com/Smootheez/Smoothiez-Api/issues)
+Found a bug or have a feature request? Please report it here: [**GitHub Issues**](https://github.com/Smootheez/Smoothiez-Api/issues)
 
 ## Support Me
 
