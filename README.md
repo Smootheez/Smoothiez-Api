@@ -50,17 +50,18 @@ While Smoothiez API was originally developed for Smootheez’s personal projects
    }
    ```
 
-## 📥 Download
+## Download
 
-- **[Modrinth](https://modrinth.com/mod/smoothiez-api)**
-- **[CurseForge](https://www.curseforge.com/minecraft/mc-mods/smoothiez-api)**
+| Modrinth                                                    | Curseforge                                                                      |
+|-------------------------------------------------------------|---------------------------------------------------------------------------------|
+| **[Smoothiez API](https://modrinth.com/mod/smoothiez-api)** | **[Smoothiez API](https://www.curseforge.com/minecraft/mc-mods/smoothiez-api)** |
 
-## 🐞 Issue Tracker
+## Issue Tracker
 
 Found a bug or have a feature request?  
 Please report it here: [**GitHub Issues**](https://github.com/Smootheez/Smoothiez-Api/issues)
 
-## ☕ Support Me
+## Support Me
 
 If you enjoy this mod and want to support my work, consider donating:
 
