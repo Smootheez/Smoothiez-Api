@@ -17,9 +17,7 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
     }
 
     public void renderLayout(GuiGraphics guiGraphics, List<PositionedElement> elements) {
-        for (PositionedElement p : elements) {
-            p.element().renderer().render(guiGraphics, p.x(), p.y());
-        }
+        for (PositionedElement p : elements) p.element().renderer().render(guiGraphics, p.x(), p.y());
     }
 
     private record Size(int totalWidth, int totalHeight) {}
@@ -30,16 +28,11 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
         int totalHeight = 0;
 
         if (direction == ElementDirection.HORIZONTAL) {
-            for (OverlayElement e : elements) {
-                totalWidth += e.width();
-            }
+            for (OverlayElement e : elements) totalWidth += e.width();
             totalWidth += (elements.size() - 1) * spacing;
             totalHeight = elements.stream().mapToInt(OverlayElement::height).max().orElse(0);
-
         } else {
-            for (OverlayElement e : elements) {
-                totalHeight += e.height();
-            }
+            for (OverlayElement e : elements) totalHeight += e.height();
             totalHeight += (elements.size() - 1) * spacing;
             totalWidth = elements.stream().mapToInt(OverlayElement::width).max().orElse(0);
         }
@@ -48,19 +41,19 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
     }
 
     private Point applyAnchorAdjustment(int anchorX, int anchorY, int totalWidth, int totalHeight) {
-        if (direction == ElementDirection.HORIZONTAL) {
-            anchorX = switch (anchor) {
-                case START -> anchorX + margin;
-                case MIDDLE -> anchorX - (totalWidth / 2);
-                case END -> anchorX - (totalWidth + margin);
-            };
-        } else {
-            anchorY = switch (anchor) {
-                case START -> anchorY + margin;
-                case MIDDLE -> anchorY - (totalHeight / 2);
-                case END -> anchorY - (totalHeight + margin);
-            };
-        }
+        // Horizontal alignment (X)
+        anchorX = switch (anchor) {
+            case START -> anchorX + margin;
+            case MIDDLE -> anchorX - (totalWidth / 2);
+            case END -> anchorX - (totalWidth + margin);
+        };
+
+        // Vertical alignment (Y)
+        anchorY = switch (anchor) {
+            case START -> anchorY + margin;
+            case MIDDLE -> anchorY - (totalHeight / 2);
+            case END -> anchorY - (totalHeight + margin);
+        };
 
         return new Point(anchorX, anchorY);
     }
@@ -73,11 +66,8 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
         for (OverlayElement element : elements) {
             result.add(new PositionedElement(currentX, currentY, element));
 
-            if (direction == ElementDirection.HORIZONTAL) {
-                currentX += element.width() + spacing;
-            } else {
-                currentY += element.height() + spacing;
-            }
+            if (direction == ElementDirection.HORIZONTAL) currentX += element.width() + spacing;
+            else currentY += element.height() + spacing;
         }
 
         return result;

@@ -1,6 +1,7 @@
-package io.github.smootheez.smoothiezapi;
+package io.github.smootheez.example.hud;
 
 import io.github.smootheez.smoothiezapi.gui.overlay.*;
+import net.fabricmc.api.*;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.*;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.*;
@@ -9,6 +10,7 @@ import net.minecraft.resources.*;
 
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 public class HandleHudOverlay implements HudElement {
     private static final ResourceLocation DUMMY_ICON_1 =
             ResourceLocation.withDefaultNamespace("textures/item/elytra.png");
@@ -39,7 +41,7 @@ public class HandleHudOverlay implements HudElement {
                 )
         );
         var enginge = new ElementLayoutEngine(
-                List.of(element1, element2), ElementAnchor.START, ElementDirection.VERTICAL, 0, 0
+                List.of(element1, element2), ElementAnchor.START, ElementDirection.VERTICAL, 0, 3
         );
         var elements = enginge.layout(0, 0);
 

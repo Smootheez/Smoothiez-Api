@@ -15,8 +15,6 @@ public class SmoothiezApi implements ModInitializer {
     @Override
     public void onInitialize() {
         Constants.LOGGER.info("Initializing " + Constants.MOD_NAME + "(" + Constants.MOD_ID + ")...");
-        HudElementRegistry.addFirst(
-                ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "overlay"), new HandleHudOverlay());
 
         try {
             registerConfigs();
