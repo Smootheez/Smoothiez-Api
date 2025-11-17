@@ -1,7 +1,8 @@
 package io.github.smootheez.smoothiezapi.gui.overlay;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.client.gui.*;
+
+import java.util.*;
 
 public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor anchor, ElementDirection direction,
                                   int spacing, int margin) {
@@ -10,9 +11,21 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
      * Calculates coordinates for all elements based on the anchor point.
      */
     public List<PositionedElement> layout(int anchorX, int anchorY) {
-        List<PositionedElement> result = new ArrayList<>();
+        var size = computeTotalSize();
+        var adjusted = applyAnchorAdjustment(anchorX, anchorY, size.totalWidth(), size.totalHeight());
+        return placeElements(adjusted.x(), adjusted.y());
+    }
 
-        // Compute total layout size
+    public void renderLayout(GuiGraphics guiGraphics, List<PositionedElement> elements) {
+        for (PositionedElement p : elements) {
+            p.element().renderer().render(guiGraphics, p.x(), p.y());
+        }
+    }
+
+    private record Size(int totalWidth, int totalHeight) {}
+    private record Point(int x, int y) {}
+
+    private Size computeTotalSize() {
         int totalWidth = 0;
         int totalHeight = 0;
 
@@ -22,6 +35,7 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
             }
             totalWidth += (elements.size() - 1) * spacing;
             totalHeight = elements.stream().mapToInt(OverlayElement::height).max().orElse(0);
+
         } else {
             for (OverlayElement e : elements) {
                 totalHeight += e.height();
@@ -30,24 +44,31 @@ public record ElementLayoutEngine(List<OverlayElement> elements, ElementAnchor a
             totalWidth = elements.stream().mapToInt(OverlayElement::width).max().orElse(0);
         }
 
-        // Adjust anchor position based on START / MIDDLE / END
+        return new Size(totalWidth, totalHeight);
+    }
+
+    private Point applyAnchorAdjustment(int anchorX, int anchorY, int totalWidth, int totalHeight) {
         if (direction == ElementDirection.HORIZONTAL) {
-            switch (anchor) {
-                case START -> anchorX += margin;
-                case MIDDLE -> anchorX -= (totalWidth / 2);
-                case END -> anchorX -= (totalWidth + margin);
-            }
+            anchorX = switch (anchor) {
+                case START -> anchorX + margin;
+                case MIDDLE -> anchorX - (totalWidth / 2);
+                case END -> anchorX - (totalWidth + margin);
+            };
         } else {
-            switch (anchor) {
-                case START -> anchorY += margin;
-                case MIDDLE -> anchorY -= (totalHeight / 2);
-                case END -> anchorY -= (totalHeight + margin);
-            }
+            anchorY = switch (anchor) {
+                case START -> anchorY + margin;
+                case MIDDLE -> anchorY - (totalHeight / 2);
+                case END -> anchorY - (totalHeight + margin);
+            };
         }
 
-        // Place elements
-        int currentX = anchorX;
-        int currentY = anchorY;
+        return new Point(anchorX, anchorY);
+    }
+
+    private List<PositionedElement> placeElements(int startX, int startY) {
+        List<PositionedElement> result = new ArrayList<>();
+        int currentX = startX;
+        int currentY = startY;
 
         for (OverlayElement element : elements) {
             result.add(new PositionedElement(currentX, currentY, element));

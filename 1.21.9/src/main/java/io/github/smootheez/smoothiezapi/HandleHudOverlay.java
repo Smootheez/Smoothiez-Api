@@ -18,39 +18,31 @@ public class HandleHudOverlay implements HudElement {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         var iconSize = 16;
-        var element1 = new OverlayElement(iconSize, iconSize);
-        var element2 = new OverlayElement(iconSize, iconSize);
-        var enginge = new ElementLayoutEngine(List.of(element1, element2), ElementAnchor.START, ElementDirection.HORIZONTAL, 3, 5);
-        var elements = enginge.layout(0, 0);
-
-        for (int i = 0; i < elements.size(); i++) {
-            var positionedElement = elements.get(i);
-
-            if (i == 0) {
-                guiGraphics.blit(
+        var element1 = new OverlayElement(
+                iconSize, iconSize,
+                (g, x, y) -> g.blit(
                         RenderPipelines.GUI_TEXTURED,
                         DUMMY_ICON_1,
-                        positionedElement.x(),
-                        positionedElement.y(),
+                        x, y,
                         0, 0,
-                        positionedElement.element().width(),
-                        positionedElement.element().height(),
-                        positionedElement.element().width(),
-                        positionedElement.element().height()
-                );
-            } else if (i == 1) {
-                guiGraphics.blit(
+                        iconSize, iconSize, iconSize, iconSize
+                )
+        );
+        var element2 = new OverlayElement(
+                iconSize, iconSize,
+                (g, x, y) -> g.blit(
                         RenderPipelines.GUI_TEXTURED,
                         DUMMY_ICON_2,
-                        positionedElement.x(),
-                        positionedElement.y(),
+                        x, y,
                         0, 0,
-                        positionedElement.element().width(),
-                        positionedElement.element().height(),
-                        positionedElement.element().width(),
-                        positionedElement.element().height()
-                );
-            }
-        }
+                        iconSize, iconSize, iconSize, iconSize
+                )
+        );
+        var enginge = new ElementLayoutEngine(
+                List.of(element1, element2), ElementAnchor.START, ElementDirection.VERTICAL, 0, 0
+        );
+        var elements = enginge.layout(0, 0);
+
+        enginge.renderLayout(guiGraphics, elements);
     }
 }
