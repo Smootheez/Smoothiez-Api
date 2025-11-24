@@ -4,9 +4,7 @@ import io.github.smootheez.smoothiezapi.api.*;
 import io.github.smootheez.smoothiezapi.config.*;
 import io.github.smootheez.smoothiezapi.util.*;
 import net.fabricmc.api.*;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.*;
 import net.fabricmc.loader.api.*;
-import net.minecraft.resources.*;
 
 import java.lang.reflect.*;
 import java.util.*;
