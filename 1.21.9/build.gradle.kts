@@ -37,7 +37,7 @@ mcModPublisher {
     version = modMinecraftVersion
     releaseType = modReleaseType
     changelog = file("../changelogs/$modMinecraftVersion.md").readText()
-    files.from(tasks.named("jar"))
+    files.from(tasks.named("remapJar"))
     gameVersions.addAll(listOf("1.21.9", "1.21.10"))
     loaders.addAll(listOf(LoaderType.FABRIC))
 
