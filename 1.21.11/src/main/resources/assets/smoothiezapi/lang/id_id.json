@@ -1,0 +1,9 @@
+{
+  "widget.smoothiezapi.add.option_list": "Tambah Nilai",
+  "widget.smoothiezapi.edit.option_list": "Ubah Nilai",
+  "widget.smoothiezapi.configure.option_list": "Ubah Daftar",
+  "screen.smoothiezapi.option_list.title": "Ubah Daftar Opsi",
+  "config.screen.smoothiezapi.title": "Konfigurasi Smoothiez",
+  "config.widget.smoothiezapi.debug_mode": "Mode Debug",
+  "config.widget.smoothiezapi.debug_mode.description": "Mengaktifkan logging ekstensif untuk tujuan debugging."
+}

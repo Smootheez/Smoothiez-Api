@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "${modid}",
+  "version": "${modVersion}+${minecraftVersion}",
+  "icon": "assets/smoothiezapi/icon.png",
+  "name": "${modName}",
+  "description": "${modDescription}",
+  "license": "${modLicense}",
+  "authors": [
+    "Smootheez"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Smootheez/Smoothiez-Api",
+    "sources": "https://github.com/Smootheez/Smoothiez-Api",
+    "issues": "https://github.com/Smootheez/Smoothiez-Api/issues"
+  },
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.smootheez.smoothiezapi.SmoothiezApi"
+    ],
+    "smoothiezapi": [
+      "io.github.smootheez.smoothiezapi.config.SmoothiezApiConfig"
+    ],
+    "modmenu": [
+      "io.github.smootheez.smoothiezapi.modmenu.ModMenuApiImpl"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loaderVersion}",
+    "minecraft": ">=${minecraftVersion}"
+  }
+}

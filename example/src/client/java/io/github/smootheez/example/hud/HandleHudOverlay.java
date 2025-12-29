@@ -12,10 +12,10 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class HandleHudOverlay implements HudElement {
-    private static final ResourceLocation DUMMY_ICON_1 =
-            ResourceLocation.withDefaultNamespace("textures/item/elytra.png");
-    private static final ResourceLocation DUMMY_ICON_2 =
-            ResourceLocation.withDefaultNamespace("textures/item/diamond.png");
+    private static final Identifier DUMMY_ICON_1 =
+            Identifier.withDefaultNamespace("textures/item/elytra.png");
+    private static final Identifier DUMMY_ICON_2 =
+            Identifier.withDefaultNamespace("textures/item/diamond.png");
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
