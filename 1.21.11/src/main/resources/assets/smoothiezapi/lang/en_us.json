@@ -1,0 +1,10 @@
+{
+  "widget.smoothiezapi.add.option_list": "Add Value",
+  "widget.smoothiezapi.edit.option_list": "Edit Value",
+  "widget.smoothiezapi.configure.option_list": "Edit List",
+  "screen.smoothiezapi.option_list.title": "Edit Option List",
+
+  "config.screen.smoothiezapi.title": "Smoothiez Config",
+  "config.widget.smoothiezapi.debug_mode": "Debug Mode",
+  "config.widget.smoothiezapi.debug_mode.description": "Enables extensive logging for debugging purposes."
+}

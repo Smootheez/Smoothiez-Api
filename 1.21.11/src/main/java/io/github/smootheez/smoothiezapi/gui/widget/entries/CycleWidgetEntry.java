@@ -1,0 +1,36 @@
+package io.github.smootheez.smoothiezapi.gui.widget.entries;
+
+import io.github.smootheez.smoothiezapi.config.*;
+import io.github.smootheez.smoothiezapi.gui.widget.base.*;
+import net.fabricmc.api.*;
+import net.minecraft.client.gui.components.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.util.*;
+import org.jetbrains.annotations.*;
+
+import java.util.*;
+
+@Environment(EnvType.CLIENT)
+public class CycleWidgetEntry<T extends Enum<T>> extends LabeledWidgetEntry<T> {
+    private final CycleButton<T> cycleButton;
+
+    public CycleWidgetEntry(String label, @Nullable List<FormattedCharSequence> description, ConfigOption<T> option) {
+        super(label, description, option);
+        T[] enumValues = this.option.getType().getEnumConstants();
+
+        this.cycleButton = CycleButton.builder(value ->
+                        Component.translatable(label + "." + value.name().toLowerCase(Locale.ROOT)),
+                        this.option.getValue())
+                .displayOnlyValue()
+                .withValues(enumValues)
+                .create(0, 0, 80, 20, Component.empty(),
+                        (cycleButton1, value) -> setOptionValue(value));
+
+        addRightAlignedWidget(cycleButton);
+    }
+
+    @Override
+    protected void updateWidgetState() {
+        cycleButton.setValue(this.option.getValue());
+    }
+}
